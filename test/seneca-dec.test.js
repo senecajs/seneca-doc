@@ -12,16 +12,19 @@ const PluginValidator = require('seneca-plugin-validator')
 const Seneca = require('seneca')
 const Plugin = require('..')
 
-
-lab.test('validate', Util.promisify(function(x,fin){PluginValidator(Plugin, module)(fin)}))
+lab.test(
+  'validate',
+  Util.promisify(function(x, fin) {
+    PluginValidator(Plugin, module)(fin)
+  })
+)
 
 lab.test('happy', async () => {
   return await seneca_instance().ready()
 })
 
-
-function seneca_instance(config,plugin_options) {
-  return Seneca(config,{legacy:{transport:false}})
+function seneca_instance(config, plugin_options) {
+  return Seneca(config, { legacy: { transport: false } })
     .test()
     .use('promisify')
     .use(Plugin, plugin_options)
