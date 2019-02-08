@@ -10,7 +10,9 @@ const Inspect = require('../lib/inspect.js')
 const LocalFolder = process.cwd()
 const LocalPackage = require(Path.resolve(LocalFolder, 'package.json'))
 
-console.log(LocalFolder, LocalPackage)
+inspect_local_plugin()
 
-const spec = Inspect(LocalFolder, LocalPackage)
-console.log(spec)
+async function inspect_local_plugin() {
+  var out = await Inspect(LocalFolder, LocalPackage)
+  console.log(out)
+}

@@ -2,6 +2,9 @@
 'use strict'
 
 module.exports = seneca_doc
+module.exports.errors = {
+  plugin_missing: 'Plugin name missing from message: <%=msg%>'
+}
 
 function seneca_doc(options) {
   const seneca = this
@@ -9,6 +12,10 @@ function seneca_doc(options) {
   seneca.message('role:doc,describe:plugin', describe_plugin)
 
   async function describe_plugin(msg) {
+    if (null == msg.plugin) {
+      throw this.fail('plugin_missing', { msg: msg })
+    }
+
     var plugin = msg.plugin.replace(/-/g, '_')
 
     var actions = []

@@ -26,7 +26,8 @@ lab.test('happy', async () => {
 lab.test('describe-plugin', async () => {
   var si = await seneca_instance().ready()
   var out = await si.post('role:doc,describe:plugin', { plugin: 'seneca-doc' })
-  console.log(out)
+  expect(out.plugin).equal('seneca_doc')
+  expect(out.actions[0].pattern).equal('describe:plugin,role:doc')
 })
 
 function seneca_instance(config, plugin_options) {
