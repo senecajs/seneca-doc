@@ -9,5 +9,3 @@ console.log(LocalFolder, LocalPackage)
 
 const spec = inspect(LocalFolder, LocalPackage)
 console.log(spec)
-
-
