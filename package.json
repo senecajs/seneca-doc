@@ -1,0 +1,42 @@
+{
+  "name": "seneca-doc",
+  "version": "0.0.1",
+  "description": "Documentation helper for Seneca plugins.",
+  "main": "seneca-doc.js",
+  "bin": {
+    "seneca-doc": "./bin/seneca-doc-exec.js"
+  },
+  "scripts": {
+    "test": "lab -P test -t 50",
+    "prettier": "prettier --write *.js lib/*.js bin/*.js test/*.js",
+    "coveralls": "lab -s -P test -r lcov | coveralls",
+    "clean-npm": "rm -rf node_modules package-lock.json",
+    "clean-yarn": "rm -rf node_modules yarn.lock",
+    "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"` && echo TAG: v$REPO_VERSION && git commit -a -m v$REPO_VERSION && git push && git tag v$REPO_VERSION && git push --tags;",
+    "repo-publish": "npm run prettier && npm test && npm run repo-tag && npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voxgig/seneca-doc.git"
+  },
+  "keywords": [
+    "seneca",
+    "doc",
+    "helper",
+    "readme"
+  ],
+  "author": "Richard Rodger richardrodger.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/voxgig/seneca-doc/issues"
+  },
+  "homepage": "https://github.com/voxgig/seneca-doc#readme",
+  "devDependencies": {
+    "code": "^5.2.4",
+    "lab": "^18.0.1",
+    "prettier": "^1.16.4",
+    "seneca": "plugin",
+    "seneca-plugin-validator": "^0.0.1",
+    "seneca-promisify": "^0.6.0"
+  }
+}
