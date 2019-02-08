@@ -23,6 +23,13 @@ lab.test('happy', async () => {
   return await seneca_instance().ready()
 })
 
+lab.test('describe-plugin', async () => {
+  var si =  await seneca_instance().ready()
+  var out = await si.post('role:doc,describe:plugin', {plugin:'seneca-doc'})
+  console.log(out)
+})
+
+
 function seneca_instance(config, plugin_options) {
   return Seneca(config, { legacy: { transport: false } })
     .test()
