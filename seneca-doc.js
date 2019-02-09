@@ -3,13 +3,16 @@
 
 module.exports = seneca_doc
 module.exports.errors = {
-  plugin_missing: 'Plugin name missing from message: <%=msg%>'
+  plugin_missing: 'Plugin name missing from message: <%=msg%>',
+  pin_missing: 'Pin missing from message: <%=msg%>'
 }
 
 function seneca_doc(options) {
   const seneca = this
 
-  seneca.message('role:doc,describe:plugin', describe_plugin)
+  seneca
+    .message('role:doc,describe:plugin', describe_plugin)
+    .message('role:doc,describe:pin', describe_pin)
 
   async function describe_plugin(msg) {
     if (null == msg.plugin) {
@@ -32,6 +35,24 @@ function seneca_doc(options) {
 
     return {
       plugin: plugin,
+      actions: actions
+    }
+  }
+
+
+  async function describe_pin(msg) {
+    if (null == msg.pin) {
+      throw this.fail('pin_missing', { msg: msg })
+    }
+
+    var actions = []
+    var list = seneca.list(msg.pin)
+    list.forEach(function(pat) {
+      var actdef = seneca.find(pat)
+      actions.push(actdef)
+    })
+
+    return {
       actions: actions
     }
   }
