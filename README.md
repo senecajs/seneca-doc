@@ -1,6 +1,12 @@
 # seneca-doc
 
+[![Npm][BadgeNpm]][Npm]
+[![Travis][BadgeTravis]][Travis]
+[![Coveralls][BadgeCoveralls]][Coveralls]
+
+
 Documentation helper for [Seneca](senecajs.org) plugins.
+
 
 ## Install
 
@@ -154,3 +160,10 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 
 <!--END:action-desc-->
 
+
+[BadgeCoveralls]: https://coveralls.io/repos/voxgig/seneca-doc/badge.svg?branch=master&service=github
+[BadgeNpm]: https://badge.fury.io/js/seneca-doc.svg
+[BadgeTravis]: https://travis-ci.org/voxgig/seneca-doc.svg?branch=master
+[Coveralls]: https://coveralls.io/github/voxgig/seneca-doc?branch=master
+[Npm]: https://www.npmjs.com/package/seneca-doc
+[Travis]: https://travis-ci.org/voxgig/seneca-doc?branch=master
