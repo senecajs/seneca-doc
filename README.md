@@ -7,8 +7,8 @@ Documentation helper for [Seneca](senecajs.org) plugins.
 
 ## Action Patterns
 
-* [describe:plugin,role:doc](#describe:plugin,role:doc)
-* [describe:pin,role:doc](#describe:pin,role:doc)
+* [describe:plugin,role:doc](#-describepluginroledoc-)
+* [describe:pin,role:doc](#-describepinroledoc-)
 
 
 <!--END:action-list-->

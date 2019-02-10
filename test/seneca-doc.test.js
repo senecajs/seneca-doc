@@ -45,15 +45,12 @@ lab.test('action_list', async () => {
   var si = await seneca_instance().ready()
   var out = await si.post('role:doc,describe:plugin', { plugin: 'seneca-doc' })
   var md = Render.action_list(out.actions)
-  console.log(md)
 })
 
 lab.test('action_desc', async () => {
   var si = await seneca_instance().ready()
   var out = await si.post('role:doc,describe:plugin', { plugin: 'seneca-doc' })
-  console.dir(out.actions[0].rules.plugin,{depth:3})
   var md = Render.action_desc(out.actions)
-  console.log(md)
 })
 
 
