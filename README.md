@@ -18,28 +18,81 @@ Documentation helper for [Seneca](senecajs.org) plugins.
 
 ## Action Descriptions
 
-### &laquo; `describe:plugin,role:doc` &raquo;
+### &laquo; `describe:plugin,role:doc` undefined&raquo;
 
 Provide introspection data for a plugin and its actions.
 
 
+
+
+#### Examples
+
+
+
+* `describe:plugin,role:doc,plugin:entity`
+  * Describe the seneca-entity plugin.
+
+* `describe:plugin,role:doc,plugin:entity$foo`
+  * Describe the seneca-entity plugin instance with tag _foo_.
 #### Parameters
 
 
-* _plugin_: string
+* _plugin_: string <i><small>{presence:required}</small></i>
+  * The full name of the plugin (if tagged, use the form name$tag).
 
 
-### &laquo; `describe:pin,role:doc` &raquo;
-
-No description provided.
 
 
+#### Replies With
+
+
+```
+{
+  plugin: 'plugin parameter',
+  actions: [
+    '{ Seneca action definition }'
+  ]
+}
+```
+
+
+----------
+### &laquo; `describe:pin,role:doc` undefined&raquo;
+
+Provide introspection data for actions matching a _pin_ (a sub pattern).
+
+
+
+
+#### Examples
+
+
+
+* `describe:pin,role:doc,pin:"a:1,b:2"`
+  * Describe actions matching at least `a:1,b:2`.
 #### Parameters
 
 
-_No parameters defined (use seneca-joi to do this)._
+* _pin_: alternatives <i><small>{presence:required}</small></i>
+  * The pin sub pattern in string or object format.
 
 
+
+
+#### Replies With
+
+
+```
+{
+  pin: 'pin parameter',
+  actions: [
+    '{ Seneca action definition }'
+  ]
+}
+```
+
+
+----------
 
 
 <!--END:action-desc-->

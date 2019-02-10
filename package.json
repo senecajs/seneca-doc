@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "code": "^5.2.4",
+    "coveralls": "^3.0.2",
     "lab": "^18.0.1",
     "prettier": "^1.16.4",
     "seneca-plugin-validator": "^0.0.1"
