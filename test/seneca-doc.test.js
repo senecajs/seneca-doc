@@ -2,6 +2,7 @@
 'use strict'
 
 const Util = require('util')
+const Fs = require('fs')
 
 const Lab = require('lab')
 const Code = require('code')
@@ -12,7 +13,8 @@ const PluginValidator = require('seneca-plugin-validator')
 const Seneca = require('seneca')
 const Plugin = require('..')
 const Render = require('../lib/render')
-const R = Render.intern
+const Inject = require('../lib/inject')
+
 
 lab.test(
   'validate',
@@ -49,60 +51,56 @@ lab.test('action_list', async () => {
 lab.test('action_desc', async () => {
   var si = await seneca_instance().ready()
   var out = await si.post('role:doc,describe:plugin', { plugin: 'seneca-doc' })
+  console.dir(out.actions[0].rules.plugin,{depth:3})
   var md = Render.action_desc(out.actions)
   console.log(md)
 })
 
-/*
-lab.test('render-hp', async () => {
-  expect(R.join(
-    R.h(1),
-    R.p(),
-    R.h(1),
-    R.p()
-  )([
-    'AAA',
-    'Lorem ipsum.\n',
-    'BBB',
-    'Dolor\nsit\n\namet.',
-  ])).equal(
-    '\n\n# AAA\n\n'+
-      'Lorem ipsum.\n\n'+
-      '\n\n# BBB\n\n'+
-      'Dolor\nsit\namet.\n\n'
-  )
+
+lab.test('update_source', async () => {
+  const src = `
+a
+<!--START:foo-->
+b
+<!--END:foo-->
+c
+<!--START:bar-->
+d
+<!--END:bar-->
+e
+`
+  var out = Inject.update_source(src,{
+    foo:{text:'BBB'},
+    bar:{text:'DDD'}
+  })
+
+  expect(out).equal(`
+a
+<!--START:foo-->
+BBB
+<!--END:foo-->
+c
+<!--START:bar-->
+DDD
+<!--END:bar-->
+e
+`)
 })
 
 
-lab.test('render-h', async () => {
-  expect(R.h(1)({text:'aaa'})).equal('\n\n# aaa\n\n')
-})
-
-lab.test('render-p', async () => {
-  expect(R.p()({text:'aaa'})).equal('aaa\n\n')
-})
-
-lab.test('render-a', async () => {
-  expect(R.a()({text:'aaa',href:'http://aaa.org'})).equal('[aaa](http://aaa.org)')
-})
-
-lab.test('render-t', async () => {
-  expect(R.t()({text:'aaa'})).equal('aaa')
-})
-
-lab.test('render-li', async () => {
-  expect(R.li(1,R.t())({text:'aaa'})).equal('* aaa\n')
-})
-
-
-lab.test('render-each', async () => {
-  expect(R.each(' ',R.t())(['a','b'])).equal('a b')
+lab.test('update_file', async () => {
+  var foo_text = ''+Math.random()
+  var bar_text = ''+Math.random()
   
-  //var list = [{text:'AA',href:'aa.org'},{text:'BB',href:'bb.org'}]
-  //expect(R.each('',R.li(1,R.a)),list).equal('')
+  Inject.update_file(__dirname+'/test.md',{
+    foo:{text:''+foo_text},
+    bar:{text:''+bar_text}
+  })
+  
+  var out = Fs.readFileSync(__dirname+'/test.md').toString()
+  expect(out.indexOf(foo_text)).above(-1)
+  expect(out.indexOf(bar_text)).above(-1)
 })
-*/
-
 
 function seneca_instance(config, plugin_options) {
   return Seneca(config, { legacy: { transport: false } })

@@ -7,14 +7,33 @@ module.exports.errors = {
   pin_missing: 'Pin missing from message: <%=msg%>'
 }
 
-function seneca_doc(options) {
+
+module.exports.preload = function() {
   const seneca = this
 
-  seneca
-    .message('role:doc,describe:plugin', describe_plugin)
-    .message('role:doc,describe:pin', describe_pin)
+  seneca.private$.action_modifiers.push(function(actdef) {
+    actdef.desc = (actdef.func && actdef.func.desc) || 'No description provided.'
+  })
+}
 
-  async function describe_plugin(msg) {
+function seneca_doc(options) {
+  const seneca = this
+  const Joi = seneca.util.Joi
+  
+  seneca
+    .add('role:doc,describe:plugin', describe_plugin)
+    .add('role:doc,describe:pin', describe_pin)
+
+
+  describe_plugin.desc =
+    'Provide introspection data for a plugin and its actions.'
+
+  describe_plugin.validate = {
+    plugin: Joi.string().required()
+  }
+
+  
+  function describe_plugin(msg, reply) {
     if (null == msg.plugin) {
       throw this.fail('plugin_missing', { msg: msg })
     }
@@ -33,14 +52,13 @@ function seneca_doc(options) {
       }
     })
 
-    return {
+    reply({
       plugin: plugin,
       actions: actions
-    }
+    })
   }
 
-
-  async function describe_pin(msg) {
+  function describe_pin(msg, reply) {
     if (null == msg.pin) {
       throw this.fail('pin_missing', { msg: msg })
     }
@@ -52,8 +70,8 @@ function seneca_doc(options) {
       actions.push(actdef)
     })
 
-    return {
+    reply({
       actions: actions
-    }
+    })
   }
 }

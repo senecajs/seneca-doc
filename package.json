@@ -32,8 +32,8 @@
   },
   "homepage": "https://github.com/voxgig/seneca-doc#readme",
   "dependencies": {
-    "seneca": "^3.8.0",
-    "seneca-promisify": "^0.6.0"
+    "seneca": "^3.8.1",
+    "seneca-promisify": "^0.7.1"
   },
   "devDependencies": {
     "code": "^5.2.4",
