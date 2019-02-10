@@ -18,7 +18,7 @@ Documentation helper for [Seneca](senecajs.org) plugins.
 
 ## Action Descriptions
 
-### &laquo; `describe:plugin,role:doc` undefined&raquo;
+### &laquo; `describe:plugin,role:doc` &raquo;
 
 Provide introspection data for a plugin and its actions.
 
@@ -57,7 +57,7 @@ Provide introspection data for a plugin and its actions.
 
 
 ----------
-### &laquo; `describe:pin,role:doc` undefined&raquo;
+### &laquo; `describe:pin,role:doc` &raquo;
 
 Provide introspection data for actions matching a _pin_ (a sub pattern).
 
