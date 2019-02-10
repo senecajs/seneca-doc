@@ -42,18 +42,20 @@ within these markers is replaced.
 The following properties can be optionally attached to the action
 function of a given message:
 
-* `description`: String describing the action.
+* `desc`: String describing the action.
 * `examples`: An object, where the keys are example paramers, and the values are description strings.
-* `validate`: The validation object supported by [seneca-joi](github.com/senecajs/seneca-joi).
+* `validate`: The validation object supported by [seneca-joi](//github.com/senecajs/seneca-joi).
 * `reply`: A literal object showing the reply object structure.
 
-See the source of [seneca-doc.js](seneca-doc.js) itself for a good
+See the source of [seneca-doc.js](seneca-doc.js#L29) itself for a good
 example of using these.
 
 NOTE: plugin options are not currently supported - that would make a
 great pull request! :)
 
-
+The *Action Patterns* and *Action Descriptions* sections below are
+examples of the generated output, run on the _seneca-doc_ plugin
+itself.
 
 
 
