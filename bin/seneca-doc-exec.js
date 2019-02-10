@@ -16,7 +16,7 @@ inspect_local_plugin()
 
 async function inspect_local_plugin() {
   var plugin = await Inspect(LocalFolder, LocalPackage)
-  
+
   var inj = {
     'action-list': {
       text: Render.action_list(plugin.actions)
@@ -25,6 +25,6 @@ async function inspect_local_plugin() {
       text: Render.action_desc(plugin.actions)
     }
   }
-  
-  Inject.update_file(Path.resolve(LocalFolder,'README.md'), inj)
+
+  Inject.update_file(Path.resolve(LocalFolder, 'README.md'), inj)
 }

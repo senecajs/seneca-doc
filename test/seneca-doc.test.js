@@ -15,7 +15,6 @@ const Plugin = require('..')
 const Render = require('../lib/render')
 const Inject = require('../lib/inject')
 
-
 lab.test(
   'validate',
   Util.promisify(function(x, fin) {
@@ -36,10 +35,9 @@ lab.test('describe-plugin', async () => {
 
 lab.test('describe-pin', async () => {
   var si = await seneca_instance().ready()
-  var out = await si.post('role:doc,describe:pin', { pin:'role:seneca' })
+  var out = await si.post('role:doc,describe:pin', { pin: 'role:seneca' })
   expect(out.actions.length).above(0)
 })
-
 
 lab.test('action_list', async () => {
   var si = await seneca_instance().ready()
@@ -53,7 +51,6 @@ lab.test('action_desc', async () => {
   var md = Render.action_desc(out.actions)
 })
 
-
 lab.test('update_source', async () => {
   const src = `
 a
@@ -66,9 +63,9 @@ d
 <!--END:bar-->
 e
 `
-  var out = Inject.update_source(src,{
-    foo:{text:'BBB'},
-    bar:{text:'DDD'}
+  var out = Inject.update_source(src, {
+    foo: { text: 'BBB' },
+    bar: { text: 'DDD' }
   })
 
   expect(out).equal(`
@@ -84,17 +81,16 @@ e
 `)
 })
 
-
 lab.test('update_file', async () => {
-  var foo_text = ''+Math.random()
-  var bar_text = ''+Math.random()
-  
-  Inject.update_file(__dirname+'/test.md',{
-    foo:{text:''+foo_text},
-    bar:{text:''+bar_text}
+  var foo_text = '' + Math.random()
+  var bar_text = '' + Math.random()
+
+  Inject.update_file(__dirname + '/test.md', {
+    foo: { text: '' + foo_text },
+    bar: { text: '' + bar_text }
   })
-  
-  var out = Fs.readFileSync(__dirname+'/test.md').toString()
+
+  var out = Fs.readFileSync(__dirname + '/test.md').toString()
   expect(out.indexOf(foo_text)).above(-1)
   expect(out.indexOf(bar_text)).above(-1)
 })
