@@ -4,8 +4,8 @@
 const Util = require('util')
 const Fs = require('fs')
 
-const Lab = require('lab')
-const Code = require('code')
+const Lab = require('@hapi/lab')
+const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const expect = Code.expect
 
@@ -15,12 +15,7 @@ const Plugin = require('..')
 const Render = require('../lib/render')
 const Inject = require('../lib/inject')
 
-lab.test(
-  'validate',
-  Util.promisify(function(x, fin) {
-    PluginValidator(Plugin, module)(fin)
-  })
-)
+lab.test('validate', PluginValidator(Plugin, module))
 
 lab.test('happy', async () => {
   return await seneca_instance().ready()
