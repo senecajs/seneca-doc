@@ -3,7 +3,7 @@ sudo: false
 
 env:
   - SENECA_VER=senecajs/seneca
-  - SENECA_VER=plugin
+  - SENECA_VER=seneca@plugin
 
 node_js:
   - '11'
