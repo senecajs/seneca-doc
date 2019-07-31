@@ -1,6 +1,6 @@
 {
   "name": "seneca-doc",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Documentation helper for Seneca plugins.",
   "main": "seneca-doc.js",
   "bin": {
@@ -22,7 +22,7 @@
     "bin/seneca-doc-exec.js",
     "lib/inject.js",
     "lib/inspect.js",
-    "lib/reander.js"
+    "lib/render.js"
   ],
   "repository": {
     "type": "git",
