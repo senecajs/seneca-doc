@@ -43,6 +43,17 @@ within these markers is replaced.
   * Inserts more detailed action descriptions (linked to by _action-list_)
 
 
+## Arguments
+
+The `seneca-doc` command takes the following command line arguments:
+
+* -p - **fully qualified** plugin name (can be used for multiple plugins)
+  that is needed by the plugin definition function. Example:
+  ```
+  seneca-doc -p seneca-entity -p @seneca/graph -p @seneca/owner
+  ```
+
+
 ### Supported documentation properties
 
 The following properties can be optionally attached to the action
