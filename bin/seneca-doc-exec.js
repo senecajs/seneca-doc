@@ -19,7 +19,11 @@ const argv = Minimist(process.argv)
 inspect_local_plugin()
 
 async function inspect_local_plugin() {
-  var extra_plugins = Array.isArray(argv.p) ? argv.p : [argv.p]
+  var extra_plugins = Array.isArray(argv.p)
+    ? argv.p
+    : 'string' === typeof p
+    ? [argv.p]
+    : null
   var options = { plugins: extra_plugins }
 
   var plugin = await Inspect(LocalFolder, LocalPackage, options)
