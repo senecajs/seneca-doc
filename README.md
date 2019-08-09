@@ -42,6 +42,24 @@ within these markers is replaced.
 * _&lt;!--START:action-desc--&gt; ... &lt;!--END:action-desc--&gt;_
   * Inserts more detailed action descriptions (linked to by _action-list_)
 
+In the top level folder of your project, create a module called
+`plugin-doc.js` where _plugin_ is the name of your plugin. This should
+return an object whose keys are the names of the action functions in
+your plugin. Each key should define an action description with
+properties as defined below. For an example,
+see [doc-doc.js](doc-doc.js) which defines the documentation for this
+plugin.
+
+Alternatively, return the same data structure from your plugin
+definition under the `doc` property.
+
+The export `doc/generating` will be `true` if documentation is being
+generated. You can use this handle cases where your plugin has
+additional dependencies that fail when it is loaded direcly by
+_seneca-doc_.
+
+See the unit tests for examples of usage.
+
 
 ## Arguments
 

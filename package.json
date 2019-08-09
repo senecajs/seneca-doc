@@ -1,13 +1,13 @@
 {
   "name": "seneca-doc",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "description": "Documentation helper for Seneca plugins.",
-  "main": "seneca-doc.js",
+  "main": "doc.js",
   "bin": {
     "seneca-doc": "./bin/seneca-doc-exec.js"
   },
   "scripts": {
-    "test": "lab -P test -t 80",
+    "test": "lab -v -L -P test -t 80",
     "prettier": "prettier --write *.js lib/*.js bin/*.js test/*.js",
     "coveralls": "lab -s -P test -r lcov | coveralls",
     "clean-npm": "rm -rf node_modules package-lock.json",
@@ -15,7 +15,7 @@
     "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"` && echo TAG: v$REPO_VERSION && git commit -a -m v$REPO_VERSION && git push && git tag v$REPO_VERSION && git push --tags;",
     "repo-publish": "npm run prettier && npm test && npm run repo-tag && npm publish --access public"
   },
-  "files":[
+  "files": [
     "LICENSE",
     "README.md",
     "seneca-doc.js",
@@ -45,6 +45,7 @@
     "seneca-promisify": "^0.8.0"
   },
   "devDependencies": {
+    "seneca-joi": "^4.1.0",
     "seneca-plugin-validator": "^0.1.1"
   }
 }
