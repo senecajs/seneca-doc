@@ -136,8 +136,8 @@ Provide introspection data for a plugin and its actions.
 #### Parameters
 
 
-* _plugin_: string <i><small>{presence:required}</small></i>
-  * The full name of the plugin (if tagged, use the form name$tag).
+* _plugin_ : string <i><small>{presence:required}</small></i>
+ : The full name of the plugin (if tagged, use the form name$tag).
 
 
 
@@ -172,8 +172,8 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 #### Parameters
 
 
-* _pin_: alternatives <i><small>{presence:required}</small></i>
-  * The pin sub pattern in string or object format.
+* _pin_ : alternatives <i><small>{presence:required}</small></i>
+ : The pin sub pattern in string or object format.
 
 
 
