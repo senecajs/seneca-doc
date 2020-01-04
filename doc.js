@@ -40,7 +40,9 @@ module.exports.preload = function() {
             : Path.dirname(plugin.requirepath)
 
           if (!Path.isAbsolute(doc_path_folder)) {
-            doc_path_folder = Path.dirname(plugin.modulepath)
+            doc_path_folder = doc_path_folder.startsWith('..')
+              ? Path.resolve(Path.dirname(plugin.modulepath), doc_path_folder)
+              : Path.dirname(plugin.modulepath)
           }
 
           var doc_path_file = actdef.plugin_name + '-doc.js'
