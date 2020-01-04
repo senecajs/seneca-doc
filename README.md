@@ -60,6 +60,13 @@ _seneca-doc_.
 
 See the unit tests for examples of usage.
 
+NOTE: Plugins must be loaded via `seneca.use()` for validation to
+activate (as well as depending on a validation plugin such as as
+`seneca-joi`). In particular, when testing, ensure that the plugin
+under test is loaded with `seneca.use('..')` (assuming tests are
+within a _test_ subfolder).
+
+
 
 ## Arguments
 
