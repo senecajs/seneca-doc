@@ -1,6 +1,6 @@
 {
   "name": "seneca-doc",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Documentation helper for Seneca plugins.",
   "main": "doc.js",
   "bin": {
@@ -8,17 +8,19 @@
   },
   "scripts": {
     "test": "lab -v -L -P test -t 80",
+    "doc": "seneca-doc",
     "prettier": "prettier --write *.js lib/*.js bin/*.js test/*.js",
     "coveralls": "lab -s -P test -r lcov | coveralls",
-    "clean-npm": "rm -rf node_modules package-lock.json",
-    "clean-yarn": "rm -rf node_modules yarn.lock",
+    "clean": "rm -rf node_modules package-lock.json yarn.lock",
+    "reset": "npm run clean && npm i && npm test",
     "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"` && echo TAG: v$REPO_VERSION && git commit -a -m v$REPO_VERSION && git push && git tag v$REPO_VERSION && git push --tags;",
-    "repo-publish": "npm run prettier && npm test && npm run repo-tag && npm publish --access public --registry=http://registry.npmjs.org"
+    "repo-publish": "npm run clean && npm i --registry http://registry.npmjs.org && npm run prettier && npm test && npm run doc && npm run repo-tag && npm publish --access public --registry=http://registry.npmjs.org"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "seneca-doc.js",
+    "doc.js",
+    "doc-doc.js",
     "bin/seneca-doc-exec.js",
     "lib/inject.js",
     "lib/inspect.js",
@@ -45,7 +47,7 @@
     "seneca-promisify": "^1.1.0"
   },
   "devDependencies": {
-    "seneca-joi": "^5.1.0",
-    "seneca-plugin-validator": "^0.3.0"
+    "seneca-joi": "^6.0.0",
+    "seneca-plugin-validator": "^0.5.0"
   }
 }

@@ -99,8 +99,8 @@ itself.
 
 ## Action Patterns
 
-* [describe:plugin,role:doc](#-describepluginroledoc-)
-* [describe:pin,role:doc](#-describepinroledoc-)
+* [describe:plugin,sys:doc](#-describepluginsysdoc-)
+* [describe:pin,sys:doc](#-describepinsysdoc-)
 
 
 <!--END:action-list-->
@@ -110,7 +110,7 @@ itself.
 
 ## Action Descriptions
 
-### &laquo; `describe:plugin,role:doc` &raquo;
+### &laquo; `describe:plugin,sys:doc` &raquo;
 
 Provide introspection data for a plugin and its actions.
 
@@ -121,10 +121,10 @@ Provide introspection data for a plugin and its actions.
 
 
 
-* `describe:plugin,role:doc,plugin:entity`
+* `describe:plugin,sys:doc,plugin:entity`
   * Describe the seneca-entity plugin.
 
-* `describe:plugin,role:doc,plugin:entity$foo`
+* `describe:plugin,sys:doc,plugin:entity$foo`
   * Describe the seneca-entity plugin instance with tag _foo_.
 #### Parameters
 
@@ -149,7 +149,7 @@ Provide introspection data for a plugin and its actions.
 
 
 ----------
-### &laquo; `describe:pin,role:doc` &raquo;
+### &laquo; `describe:pin,sys:doc` &raquo;
 
 Provide introspection data for actions matching a _pin_ (a sub pattern).
 
@@ -160,7 +160,7 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 
 
 
-* `describe:pin,role:doc,pin:"a:1,b:2"`
+* `describe:pin,sys:doc,pin:"a:1,b:2"`
   * Describe actions matching at least `a:1,b:2`.
 #### Parameters
 
