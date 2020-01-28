@@ -3,6 +3,7 @@
 [![Npm][BadgeNpm]][Npm]
 [![Travis][BadgeTravis]][Travis]
 [![Coveralls][BadgeCoveralls]][Coveralls]
+[![Maintainability](https://api.codeclimate.com/v1/badges/68675302d30a1e3e9447/maintainability)](https://codeclimate.com/github/voxgig/seneca-doc/maintainability)
 
 
 Documentation helper for [Seneca](senecajs.org) plugins.

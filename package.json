@@ -1,6 +1,6 @@
 {
   "name": "seneca-doc",
-  "version": "1.6.1",
+  "version": "2.0.0",
   "description": "Documentation helper for Seneca plugins.",
   "main": "doc.js",
   "bin": {
@@ -47,6 +47,7 @@
     "seneca-promisify": "^1.2.0"
   },
   "devDependencies": {
+    "@hapi/lab": "^22.0.3",
     "seneca-joi": "^7.0.1",
     "seneca-plugin-validator": "^0.6.0"
   }
