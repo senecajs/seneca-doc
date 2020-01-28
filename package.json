@@ -44,10 +44,10 @@
   "homepage": "https://github.com/voxgig/seneca-doc#readme",
   "dependencies": {
     "seneca": "plugin",
-    "seneca-promisify": "^1.1.0"
+    "seneca-promisify": "^1.2.0"
   },
   "devDependencies": {
-    "seneca-joi": "^6.0.0",
-    "seneca-plugin-validator": "^0.5.0"
+    "seneca-joi": "^7.0.1",
+    "seneca-plugin-validator": "^0.6.0"
   }
 }

@@ -36,7 +36,7 @@ lab.test('action-validation', async () => {
     await si.post('p:p0,a:1', { x: 1 })
     Code.fail()
   } catch (e) {
-    expect(e.message).contains('child "x" fails because ["x" must be a string]')
+    expect(e.message).contains('"x" must be a string')
   }
 
   var a2o1 = await si.post('p:p0,a:2,x:x')
@@ -57,7 +57,7 @@ lab.test('action-validation', async () => {
     await si.post('p:p1,a:1', { x: 1 })
     Code.fail()
   } catch (e) {
-    expect(e.message).contains('child "x" fails because ["x" must be a string]')
+    expect(e.message).contains('"x" must be a string')
   }
 
   a2o1 = await si.post('p:p1,a:2,x:x')
