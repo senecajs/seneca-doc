@@ -56,7 +56,9 @@ module.exports.preload = function() {
               doc_path = Path.resolve(doc_path_folder, doc_path_file)
               docdef = require(Path.resolve(doc_path_folder, doc_path_file))
             } catch (e) {
-              // IGNORED
+              if('MODULE_NOT_FOUND' != e.code) {
+                throw e
+              }
             }
           }
         }
