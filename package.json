@@ -1,6 +1,6 @@
 {
   "name": "seneca-doc",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Documentation helper for Seneca plugins.",
   "main": "doc.js",
   "bin": {
@@ -45,12 +45,12 @@
   "homepage": "https://github.com/voxgig/seneca-doc#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
-    "seneca": "^3.20.1",
+    "seneca": "^3.20.2",
     "seneca-promisify": "^1.2.0"
   },
   "devDependencies": {
     "@hapi/lab": "^22.0.3",
-    "seneca-joi": "^7.0.1",
-    "seneca-plugin-validator": "^0.6.0"
+    "seneca-joi": "^7.0.2",
+    "seneca-plugin-validator": "^0.6.1"
   }
 }
