@@ -67,7 +67,8 @@ activate (as well as depending on a validation plugin such as as
 under test is loaded with `seneca.use('..')` (assuming tests are
 within a _test_ subfolder).
 
-NOTE: must be loaded *before* `seneca-joi`.
+NOTE: must be loaded *before* `seneca-joi` so that the rules are
+available to `seneca-joi`.
 
 
 ## Arguments

@@ -1,13 +1,22 @@
-/* Copyright (c) 2019 voxgig and other contributors, MIT License */
+/* Copyright (c) 2019 Voxgig Ltd. and other contributors, MIT License */
 'use strict'
 
 const Path = require('path')
+
+const Joi = require('@hapi/joi')
 
 module.exports = doc
 module.exports.errors = {
   plugin_missing: 'Plugin name missing from message: <%=msg%>',
   pin_missing: 'Pin missing from message: <%=msg%>'
 }
+
+const actdoc_schema = Joi.object({
+  desc: Joi.string().required(),
+  validate: Joi.object(),
+  examples: Joi.object(),
+  reply_desc: Joi.object(),
+})
 
 module.exports.preload = function() {
   const seneca = this
@@ -68,7 +77,17 @@ module.exports.preload = function() {
           if (doc_path) {
             plugin.docpath = doc_path
           }
-          actdoc = docdef[actdef.func && actdef.func.name] || {}
+          var actdef_func_name = actdef.func && actdef.func.name
+          actdoc = docdef[actdef_func_name]
+
+          if(actdoc) {
+            actdoc = Joi.attempt(actdoc,actdoc_schema,'action '+
+                                 actdef.pattern+' ('+actdef_func_name+
+                                 ') documentation invalid')
+          }
+          else {
+            actdoc = {}
+          }
         }
       }
     }

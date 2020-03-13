@@ -49,7 +49,7 @@
     "seneca-promisify": "^1.2.0"
   },
   "devDependencies": {
-    "@hapi/lab": "^22.0.3",
+    "@hapi/lab": "^22.0.4",
     "seneca-joi": "^7.0.2",
     "seneca-plugin-validator": "^0.6.1"
   }
