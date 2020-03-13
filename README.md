@@ -201,7 +201,7 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 
 
 [BadgeCoveralls]: https://coveralls.io/repos/voxgig/seneca-doc/badge.svg?branch=master&service=github
-[BadgeNpm]: https://badge.fury.io/js/@seneca/doc.svg
+[BadgeNpm]: https://badge.fury.io/js/%40seneca%2Fdoc.svg
 [BadgeTravis]: https://travis-ci.org/voxgig/seneca-doc.svg?branch=master
 [Coveralls]: https://coveralls.io/github/voxgig/seneca-doc?branch=master
 [Npm]: https://www.npmjs.com/package/@seneca/doc
