@@ -15,7 +15,7 @@ const actdoc_schema = Joi.object({
   desc: Joi.string().required(),
   validate: Joi.object(),
   examples: Joi.object(),
-  reply_desc: Joi.object(),
+  reply_desc: Joi.object()
 })
 
 module.exports.preload = function() {
@@ -80,12 +80,17 @@ module.exports.preload = function() {
           var actdef_func_name = actdef.func && actdef.func.name
           actdoc = docdef[actdef_func_name]
 
-          if(actdoc) {
-            actdoc = Joi.attempt(actdoc,actdoc_schema,'action '+
-                                 actdef.pattern+' ('+actdef_func_name+
-                                 ') documentation invalid')
-          }
-          else {
+          if (actdoc) {
+            actdoc = Joi.attempt(
+              actdoc,
+              actdoc_schema,
+              'action ' +
+                actdef.pattern +
+                ' (' +
+                actdef_func_name +
+                ') documentation invalid'
+            )
+          } else {
             actdoc = {}
           }
         }
