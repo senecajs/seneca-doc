@@ -28,7 +28,12 @@ async function inspect_local_plugin() {
 
   var plugin = await Inspect(LocalFolder, LocalPackage, options)
 
+  //console.log('SD EXEC', plugin.def.options_schema.describe() )
+  
   var inj = {
+    'options': {
+      text: Render.options(plugin)
+    },
     'action-list': {
       text: Render.action_list(plugin.actions)
     },

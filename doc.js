@@ -21,6 +21,7 @@ const actdoc_schema = Joi.object({
 module.exports.preload = function() {
   const seneca = this
 
+  // TODO: replace with ordu task when seneca.add is updated to use ordu
   seneca.private$.action_modifiers.push(function(actdef) {
     var actdoc = {}
 
@@ -128,11 +129,11 @@ function doc(options) {
   const Joi = seneca.util.Joi
 
   seneca
-    .add('sys:doc,describe:plugin', describe_plugin)
+    .add('sys:doc,describe:plugin', describe_plugin_msg)
     .add('sys:doc,describe:pin', describe_pin)
 
   // Documentation for this action is defined directly inside the plugin
-  Object.assign(describe_plugin, {
+  Object.assign(describe_plugin_msg, {
     desc: 'Provide introspection data for a plugin and its actions.',
     examples: {
       'plugin:entity': 'Describe the seneca-entity plugin.',
@@ -152,29 +153,40 @@ function doc(options) {
     }
   })
 
-  function describe_plugin(msg, reply) {
+
+  function describe_plugin_msg(msg, reply) {
+    var desc = describe_plugin.call(this, msg)
+    reply(desc)
+  }
+  
+  function describe_plugin(msg) {
+    var instance = this || seneca
+
     if (null == msg.plugin) {
-      throw this.fail('plugin_missing', { msg: msg })
+      throw instance.error('plugin_missing', { msg: msg })
     }
 
+    var def = instance.find_plugin(msg.plugin)
+    
     var plugin = msg.plugin.replace(/-/g, '_')
 
     var actions = []
-    var list = seneca.list()
+    var list = instance.list()
     list.forEach(function(pat) {
-      if ('seneca' == pat.role) return
+      if ('instance' == pat.role) return
 
-      var actdef = seneca.find(pat)
+      var actdef = instance.find(pat)
 
       if (actdef.plugin.name == plugin || actdef.plugin.fullname == plugin) {
         actions.push(actdef)
       }
     })
 
-    reply({
+    return {
+      def: def,
       plugin: plugin,
       actions: actions
-    })
+    }
   }
 
   // Documentation for this action is defined in doc-doc.js
@@ -205,6 +217,7 @@ function doc(options) {
 
   return {
     exportmap: {
+      describe_plugin: describe_plugin,
       generating: options.generating
     }
   }
