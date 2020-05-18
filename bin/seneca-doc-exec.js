@@ -24,21 +24,26 @@ async function inspect_local_plugin() {
     : 'string' === typeof p
     ? [argv.p]
     : null
-  var options = { plugins: extra_plugins }
+
+  // NOTE: use -t for further top level names
+  var top = ['role','sys'].concat((argv.t||'').split(',')).filter(x=>''!=x)
+  
+  var options = {
+    plugins: extra_plugins,
+    top: top
+  }
 
   var plugin = await Inspect(LocalFolder, LocalPackage, options)
 
-  //console.log('SD EXEC', plugin.def.options_schema.describe() )
-  
   var inj = {
     'options': {
-      text: Render.options(plugin)
+      text: Render.options(plugin,options)
     },
     'action-list': {
-      text: Render.action_list(plugin.actions)
+      text: Render.action_list(plugin,options)
     },
     'action-desc': {
-      text: Render.action_desc(plugin.actions)
+      text: Render.action_desc(plugin,options)
     }
   }
 

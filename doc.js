@@ -6,6 +6,11 @@ const Path = require('path')
 const Joi = require('@hapi/joi')
 
 module.exports = doc
+
+module.exports.defaults = {
+  test: false
+}
+
 module.exports.errors = {
   plugin_missing: 'Plugin name missing from message: <%=msg%>',
   pin_missing: 'Pin missing from message: <%=msg%>'
@@ -173,7 +178,7 @@ function doc(options) {
     var actions = []
     var list = instance.list()
     list.forEach(function(pat) {
-      if ('instance' == pat.role) return
+      if ('seneca' == pat.role) return
 
       var actdef = instance.find(pat)
 

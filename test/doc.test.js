@@ -106,10 +106,18 @@ lab.test('describe-pin', async () => {
   expect(out.actions.length).above(0)
 })
 
+lab.test('options_section', async () => {
+  var si = await seneca_instance().ready()
+  var out = await si.post('sys:doc,describe:plugin', { plugin: 'doc' })
+  var md = Render.options(out)
+  expect(md).contains('## Options')
+  expect(md).contains('`test`')
+})
+
 lab.test('action_list', async () => {
   var si = await seneca_instance().ready()
   var out = await si.post('sys:doc,describe:plugin', { plugin: 'doc' })
-  var md = Render.action_list(out.actions)
+  var md = Render.action_list(out)
   expect(md).contains('describe:plugin,sys:doc')
   expect(md).contains('describe:pin,sys:doc')
 })
@@ -117,7 +125,7 @@ lab.test('action_list', async () => {
 lab.test('action_desc', async () => {
   var si = await seneca_instance().ready()
   var out = await si.post('sys:doc,describe:plugin', { plugin: 'doc' })
-  var md = Render.action_desc(out.actions)
+  var md = Render.action_desc(out)
   expect(md).contains('describe:plugin,sys:doc')
 })
 
@@ -164,6 +172,20 @@ lab.test('update_file', async () => {
   expect(out.indexOf(foo_text)).above(-1)
   expect(out.indexOf(bar_text)).above(-1)
 })
+
+
+lab.test('render-intern-nicepat', async () => {
+  var rin = Render.intern.nicepat
+  var top = ['sys','role']
+  expect(rin('a:1,sys:foo',top)).equal('sys:foo,a:1')
+  expect(rin('b:2,sys:foo,a:1',top)).equal('sys:foo,a:1,b:2')
+  expect(rin('a:1,role:bar',top)).equal('role:bar,a:1')
+  expect(rin('b:2,role:bar,a:1',top)).equal('role:bar,a:1,b:2')
+  expect(rin('sys:foo,a:1,role:bar',top)).equal('role:bar,sys:foo,a:1')
+  expect(rin('b:2,role:bar,a:1,sys:foo',top)).equal('role:bar,sys:foo,a:1,b:2')
+})
+
+
 
 function seneca_instance(config, plugin_options) {
   return Seneca(config, { legacy: { transport: false } })
