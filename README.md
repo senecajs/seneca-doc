@@ -109,8 +109,8 @@ itself.
 
 ## Action Patterns
 
-* [describe:plugin,sys:doc](#-describepluginsysdoc-)
-* [describe:pin,sys:doc](#-describepinsysdoc-)
+* [sys:doc,describe:pin](#-sysdocdescribepin-)
+* [sys:doc,describe:plugin](#-sysdocdescribeplugin-)
 
 
 <!--END:action-list-->
@@ -120,46 +120,7 @@ itself.
 
 ## Action Descriptions
 
-### &laquo; `describe:plugin,sys:doc` &raquo;
-
-Provide introspection data for a plugin and its actions.
-
-
-
-
-#### Examples
-
-
-
-* `describe:plugin,sys:doc,plugin:entity`
-  * Describe the seneca-entity plugin.
-
-* `describe:plugin,sys:doc,plugin:entity$foo`
-  * Describe the seneca-entity plugin instance with tag _foo_.
-#### Parameters
-
-
-* _plugin_ : string <i><small>{presence:required}</small></i>
- : The full name of the plugin (if tagged, use the form name$tag).
-
-
-
-
-#### Replies With
-
-
-```
-{
-  plugin: 'plugin parameter',
-  actions: [
-    '{ Seneca action definition }'
-  ]
-}
-```
-
-
-----------
-### &laquo; `describe:pin,sys:doc` &raquo;
+### &laquo; `sys:doc,describe:pin` &raquo;
 
 Provide introspection data for actions matching a _pin_ (a sub pattern).
 
@@ -170,12 +131,12 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 
 
 
-* `describe:pin,sys:doc,pin:"a:1,b:2"`
+* `sys:doc,describe:pin,pin:"a:1,b:2"`
   * Describe actions matching at least `a:1,b:2`.
 #### Parameters
 
 
-* _pin_ : alternatives <i><small>{presence:required}</small></i>
+* _pin_ : alternatives <i><small>"&nbsp;"</small></i>
  : The pin sub pattern in string or object format.
 
 
@@ -187,6 +148,45 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 ```
 {
   pin: 'pin parameter',
+  actions: [
+    '{ Seneca action definition }'
+  ]
+}
+```
+
+
+----------
+### &laquo; `sys:doc,describe:plugin` &raquo;
+
+Provide introspection data for a plugin and its actions.
+
+
+
+
+#### Examples
+
+
+
+* `sys:doc,describe:plugin,plugin:entity`
+  * Describe the seneca-entity plugin.
+
+* `sys:doc,describe:plugin,plugin:entity$foo`
+  * Describe the seneca-entity plugin instance with tag _foo_.
+#### Parameters
+
+
+* _plugin_ : string <i><small>"&nbsp;"</small></i>
+ : The full name of the plugin (if tagged, use the form name$tag).
+
+
+
+
+#### Replies With
+
+
+```
+{
+  plugin: 'plugin parameter',
   actions: [
     '{ Seneca action definition }'
   ]

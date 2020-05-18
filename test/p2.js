@@ -1,4 +1,3 @@
-
 module.exports = p2
 
 module.exports.doc = require('./p2-doc-by-plugin')

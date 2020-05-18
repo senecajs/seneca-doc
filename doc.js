@@ -82,11 +82,10 @@ module.exports.preload = function() {
         }
 
         if (docdef) {
-
           // TODO: document this as it should be prefered way to define Joi schemas
           // in doc definition
-          if('function' === typeof(docdef)) {
-            docdef = docdef(seneca, {Joi})
+          if ('function' === typeof docdef) {
+            docdef = docdef(seneca, { Joi })
           }
 
           plugin.docdef = docdef
@@ -158,12 +157,11 @@ function doc(options) {
     }
   })
 
-
   function describe_plugin_msg(msg, reply) {
     var desc = describe_plugin.call(this, msg)
     reply(desc)
   }
-  
+
   function describe_plugin(msg) {
     var instance = this || seneca
 
@@ -172,7 +170,7 @@ function doc(options) {
     }
 
     var def = instance.find_plugin(msg.plugin)
-    
+
     var plugin = msg.plugin.replace(/-/g, '_')
 
     var actions = []

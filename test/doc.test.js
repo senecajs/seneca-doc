@@ -45,8 +45,6 @@ lab.test('action-validation', async () => {
   var a2o2 = await si.post('p:p0,a:2', { x: 1 })
   expect(a2o2.y).equal(1)
 
-
-  
   // Load from `doc` prop in plugin meta return
 
   await si.use('./p1').ready()
@@ -68,8 +66,6 @@ lab.test('action-validation', async () => {
   a2o2 = await si.post('p:p1,a:2', { x: 1 })
   expect(a2o2.y).equal(1)
 
-
-  
   // Load from `doc` prop in plugin object
 
   await si.use('./p2').ready()
@@ -90,7 +86,6 @@ lab.test('action-validation', async () => {
 
   a2o2 = await si.post('p:p2,a:2', { x: 1 })
   expect(a2o2.y).equal(1)
-
 })
 
 lab.test('describe-plugin', async () => {
@@ -173,19 +168,16 @@ lab.test('update_file', async () => {
   expect(out.indexOf(bar_text)).above(-1)
 })
 
-
 lab.test('render-intern-nicepat', async () => {
   var rin = Render.intern.nicepat
-  var top = ['sys','role']
-  expect(rin('a:1,sys:foo',top)).equal('sys:foo,a:1')
-  expect(rin('b:2,sys:foo,a:1',top)).equal('sys:foo,a:1,b:2')
-  expect(rin('a:1,role:bar',top)).equal('role:bar,a:1')
-  expect(rin('b:2,role:bar,a:1',top)).equal('role:bar,a:1,b:2')
-  expect(rin('sys:foo,a:1,role:bar',top)).equal('role:bar,sys:foo,a:1')
-  expect(rin('b:2,role:bar,a:1,sys:foo',top)).equal('role:bar,sys:foo,a:1,b:2')
+  var top = ['sys', 'role']
+  expect(rin('a:1,sys:foo', top)).equal('sys:foo,a:1')
+  expect(rin('b:2,sys:foo,a:1', top)).equal('sys:foo,a:1,b:2')
+  expect(rin('a:1,role:bar', top)).equal('role:bar,a:1')
+  expect(rin('b:2,role:bar,a:1', top)).equal('role:bar,a:1,b:2')
+  expect(rin('sys:foo,a:1,role:bar', top)).equal('role:bar,sys:foo,a:1')
+  expect(rin('b:2,role:bar,a:1,sys:foo', top)).equal('role:bar,sys:foo,a:1,b:2')
 })
-
-
 
 function seneca_instance(config, plugin_options) {
   return Seneca(config, { legacy: { transport: false } })
