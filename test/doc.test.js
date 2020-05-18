@@ -45,6 +45,8 @@ lab.test('action-validation', async () => {
   var a2o2 = await si.post('p:p0,a:2', { x: 1 })
   expect(a2o2.y).equal(1)
 
+
+  
   // Load from `doc` prop in plugin meta return
 
   await si.use('./p1').ready()
@@ -55,7 +57,7 @@ lab.test('action-validation', async () => {
 
   try {
     await si.post('p:p1,a:1', { x: 1 })
-    Code.fail()
+    Code.fail('did not validate')
   } catch (e) {
     expect(e.message).contains('"x" must be a string')
   }
@@ -65,6 +67,30 @@ lab.test('action-validation', async () => {
 
   a2o2 = await si.post('p:p1,a:2', { x: 1 })
   expect(a2o2.y).equal(1)
+
+
+  
+  // Load from `doc` prop in plugin object
+
+  await si.use('./p2').ready()
+  // TODO: allow doc extraction from export
+
+  a1o1 = await si.post('p:p2,a:1,x:x')
+  expect(a1o1.y).equal('x')
+
+  try {
+    await si.post('p:p2,a:1', { x: 1 })
+    Code.fail('did not validate')
+  } catch (e) {
+    expect(e.message).contains('"x" must be a string')
+  }
+
+  a2o1 = await si.post('p:p2,a:2,x:x')
+  expect(a2o1.y).equal('x')
+
+  a2o2 = await si.post('p:p2,a:2', { x: 1 })
+  expect(a2o2.y).equal(1)
+
 })
 
 lab.test('describe-plugin', async () => {

@@ -37,8 +37,11 @@ module.exports.preload = function() {
 
         if (plugin.meta && plugin.meta.doc) {
           docdef = plugin.meta.doc
-        } else if (plugin.docdef) {
-          docdef = plugin.docdef
+        }
+
+        // NOTE `doc` is preferred as consistent with meta
+        else if (plugin.define.doc || plugin.define.docdef) {
+          docdef = plugin.define.doc || plugin.define.docdef
         }
 
         var doc_path
@@ -73,6 +76,13 @@ module.exports.preload = function() {
         }
 
         if (docdef) {
+
+          // TODO: document this as it should be prefered way to define Joi schemas
+          // in doc definition
+          if('function' === typeof(docdef)) {
+            docdef = docdef(seneca, {Joi})
+          }
+
           plugin.docdef = docdef
           if (doc_path) {
             plugin.docpath = doc_path
