@@ -231,3 +231,4 @@ Provide introspection data for a plugin and its actions.
 [Coveralls]: https://coveralls.io/github/voxgig/seneca-doc?branch=master
 [Npm]: https://www.npmjs.com/package/@seneca/doc
 [Travis]: https://travis-ci.org/voxgig/seneca-doc?branch=master
+
