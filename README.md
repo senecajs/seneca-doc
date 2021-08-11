@@ -5,6 +5,8 @@
 [![Coveralls][BadgeCoveralls]][Coveralls]
 [![Maintainability](https://api.codeclimate.com/v1/badges/68675302d30a1e3e9447/maintainability)](https://codeclimate.com/github/voxgig/seneca-doc/maintainability)
 
+| ![Voxgig](https://www.voxgig.com/res/img/vgt01r.png) | This open source module is sponsored and supported by [Voxgig](https://www.voxgig.com). |
+|---|---|
 
 Documentation helper for [Seneca](senecajs.org) plugins.
 
