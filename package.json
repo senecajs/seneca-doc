@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "lab -v -L -P test -t 80",
+    "test-some": "lab -v -P test -g",
     "doc": "seneca-doc",
     "prettier": "prettier --write *.js lib/*.js bin/*.js test/*.js",
     "coveralls": "lab -s -P test -r lcov | coveralls",
@@ -15,7 +16,7 @@
     "reset": "npm run clean && npm i && npm test",
     "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"` && echo TAG: v$REPO_VERSION && git commit -a -m v$REPO_VERSION && git push && git tag v$REPO_VERSION && git push --tags;",
     "repo-publish": "npm run clean && npm i --registry http://registry.npmjs.org && npm run prettier && npm test && npm run doc && npm run repo-tag && npm publish --access public --registry=http://registry.npmjs.org",
-    "repo-publish-quick": "npm run prettier && npm test && npm run doc && npm run repo-tag && npm publish --access public --registry=http://registry.npmjs.org"
+    "repo-publish-quick": "npm run prettier && npm test && npm run doc && npm run repo-tag && npm publish --access public --registry=https://registry.npmjs.org"
   },
   "files": [
     "LICENSE",
@@ -45,11 +46,11 @@
   "homepage": "https://github.com/voxgig/seneca-doc#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
-    "seneca": "^3.22.0",
-    "seneca-promisify": "^2.0.0"
+    "seneca": "^3.26.2",
+    "seneca-promisify": "^2.3.0"
   },
   "devDependencies": {
-    "@hapi/lab": "^23.0.0",
+    "@hapi/lab": "^24.6.0",
     "seneca-joi": "^7.0.2",
     "seneca-plugin-validator": "^0.6.1"
   }
