@@ -108,22 +108,7 @@ itself.
 
 ## Options
 
-* `test` : boolean <i><small>false</small></i>
-
-
-Set plugin options when loading with:
-```js
-
-
-seneca.use('doc', { name: value, ... })
-
-
-```
-
-
-<small>Note: <code>foo.bar</code> in the list above means 
-<code>{ foo: { bar: ... } }</code></small> 
-
+*None.*
 
 
 <!--END:options-->

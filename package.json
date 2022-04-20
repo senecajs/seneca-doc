@@ -1,6 +1,6 @@
 {
   "name": "@seneca/doc",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Documentation helper for Seneca plugins.",
   "main": "doc.js",
   "bin": {
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "lab -v -L -P test -t 80",
     "test-some": "lab -v -P test -g",
-    "doc": "seneca-doc",
+    "doc": "node ./bin/seneca-doc-exec.js",
     "prettier": "prettier --write *.js lib/*.js bin/*.js test/*.js",
     "coveralls": "lab -s -P test -r lcov | coveralls",
     "clean": "rm -rf node_modules package-lock.json yarn.lock",
