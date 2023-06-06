@@ -37,17 +37,15 @@ async function inspect_local_plugin() {
 
   var plugin = await Inspect(LocalFolder, LocalPackage, options)
 
-  var inj = {
-    options: {
-      text: Render.options(plugin, options)
-    },
-    'action-list': {
-      text: Render.action_list(plugin, options)
-    },
-    'action-desc': {
-      text: Render.action_desc(plugin, options)
+  var ignore_inj = [ 'intern', ]
+
+  var inj = Object.keys(Render).reduce((acc, prop)=>{
+    var re = new RegExp(ignore_inj.join('|'))
+    if(!prop.match(re)) {
+      acc[prop.replace(/_+/, '-')] = { text: Render[prop](plugin, options) }
     }
-  }
+    return acc
+  }, {})
 
   Inject.update_file(Path.resolve(LocalFolder, 'README.md'), inj)
 }
