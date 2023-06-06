@@ -37,10 +37,11 @@ async function inspect_local_plugin() {
 
   var plugin = await Inspect(LocalFolder, LocalPackage, options)
 
-  var ignore_inj = [ 'intern', ]
+  // props to ignore
+  const ignore_props = [ 'intern' ]
+  const re = new RegExp( ignore_props.join('|') )
 
   var inj = Object.keys(Render).reduce((acc, prop)=>{
-    var re = new RegExp(ignore_inj.join('|'))
     if(!prop.match(re)) {
       acc[prop.replace(/_+/, '-')] = { text: Render[prop](plugin, options) }
     }
