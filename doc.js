@@ -23,6 +23,12 @@ const actdoc_schema = Joi.object({
   reply_desc: Joi.object()
 })
 
+// schema for namespacing
+const docdef_schema = Joi.object({
+  messages: Joi.object().required(),
+  sections: Joi.object(),
+})
+
 module.exports.preload = function() {
   const seneca = this
 
@@ -87,13 +93,18 @@ module.exports.preload = function() {
           if ('function' === typeof docdef) {
             docdef = docdef(seneca, { Joi })
           }
+          
+          docdef = Joi.attempt(
+            docdef,
+            docdef_schema, 'invalid')
+            
 
           plugin.docdef = docdef
           if (doc_path) {
             plugin.docpath = doc_path
           }
           var actdef_func_name = actdef.func && actdef.func.name
-          actdoc = docdef[actdef_func_name]
+          actdoc = docdef.messages[actdef_func_name]
 
           if (actdoc) {
             actdoc = Joi.attempt(

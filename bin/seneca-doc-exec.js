@@ -43,7 +43,7 @@ async function inspect_local_plugin() {
 
   var inj = Object.keys(Render).reduce((acc, prop)=>{
     if(!prop.match(re)) {
-      acc[prop.replace(/_+/, '-')] = { text: Render[prop](plugin, options) }
+      acc[prop.replace(/_+/, '-')] = Render[prop](plugin, options)
     }
     return acc
   }, {})
