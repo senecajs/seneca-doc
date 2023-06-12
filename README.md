@@ -119,8 +119,8 @@ itself.
 
 ## Action Patterns
 
-* [sys:doc,describe:pin](#-sysdocdescribepin-)
-* [sys:doc,describe:plugin](#-sysdocdescribeplugin-)
+* ["sys":"doc","describe":"pin"](#-sysdocdescribepin-)
+* ["sys":"doc","describe":"plugin"](#-sysdocdescribeplugin-)
 
 
 <!--END:action-list-->
@@ -130,7 +130,7 @@ itself.
 
 ## Action Descriptions
 
-### &laquo; `sys:doc,describe:pin` &raquo;
+### &laquo; `"sys":"doc","describe":"pin"` &raquo;
 
 Provide introspection data for actions matching a _pin_ (a sub pattern).
 
@@ -141,7 +141,7 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 
 
 
-* `sys:doc,describe:pin,pin:"a:1,b:2"`
+* `"sys":"doc","describe":"pin",pin:"a:1,b:2"`
   * Describe actions matching at least `a:1,b:2`.
 #### Parameters
 
@@ -166,7 +166,7 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 
 
 ----------
-### &laquo; `sys:doc,describe:plugin` &raquo;
+### &laquo; `"sys":"doc","describe":"plugin"` &raquo;
 
 Provide introspection data for a plugin and its actions.
 
@@ -177,10 +177,10 @@ Provide introspection data for a plugin and its actions.
 
 
 
-* `sys:doc,describe:plugin,plugin:entity`
+* `"sys":"doc","describe":"plugin",plugin:entity`
   * Describe the seneca-entity plugin.
 
-* `sys:doc,describe:plugin,plugin:entity$foo`
+* `"sys":"doc","describe":"plugin",plugin:entity$foo`
   * Describe the seneca-entity plugin instance with tag _foo_.
 #### Parameters
 

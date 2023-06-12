@@ -105,7 +105,7 @@ lab.test('options_section', async () => {
   var si = await seneca_instance().ready()
   var out = await si.post('sys:doc,describe:plugin', { plugin: 'doc' })
   var md = Render.options(out)
-  expect(md).contains('## Options')
+  expect(md[0].text).contains('## Options')
 
   // TODO: convert to using Gubu
   // expect(md).contains('`test`')
@@ -114,16 +114,16 @@ lab.test('options_section', async () => {
 lab.test('action_list', async () => {
   var si = await seneca_instance().ready()
   var out = await si.post('sys:doc,describe:plugin', { plugin: 'doc' })
-  var md = Render.action_list(out)
-  expect(md).contains('describe:plugin,sys:doc')
-  expect(md).contains('describe:pin,sys:doc')
+  var md = Render.action_list(out)[0].text
+  expect(md).contains('"describe":"plugin","sys":"doc"')
+  expect(md).contains('"describe":"pin","sys":"doc"')
 })
 
 lab.test('action_desc', async () => {
   var si = await seneca_instance().ready()
   var out = await si.post('sys:doc,describe:plugin', { plugin: 'doc' })
-  var md = Render.action_desc(out)
-  expect(md).contains('describe:plugin,sys:doc')
+  var md = Render.action_desc(out)[0].text
+  expect(md).contains('"describe":"plugin","sys":"doc"')
 })
 
 lab.test('update_source', async () => {
@@ -139,8 +139,8 @@ d
 e
 `
   var out = Inject.update_source(src, {
-    foo: { text: 'BBB' },
-    bar: { text: 'DDD' }
+    foo: [{ name: 'foo', text: 'BBB' }],
+    bar: [{ name: 'bar', text: 'DDD' }]
   })
 
   expect(out).equal(`
@@ -161,8 +161,8 @@ lab.test('update_file', async () => {
   var bar_text = '' + Math.random()
 
   Inject.update_file(__dirname + '/test.md', {
-    foo: { text: '' + foo_text },
-    bar: { text: '' + bar_text }
+    foo: [{ name: 'foo', text: '' + foo_text }],
+    bar: [{ name: 'bar', text: '' + bar_text }]
   })
 
   var out = Fs.readFileSync(__dirname + '/test.md').toString()
@@ -173,12 +173,16 @@ lab.test('update_file', async () => {
 lab.test('render-intern-nicepat', async () => {
   var rin = Render.intern.nicepat
   var top = ['sys', 'role']
-  expect(rin('a:1,sys:foo', top)).equal('sys:foo,a:1')
-  expect(rin('b:2,sys:foo,a:1', top)).equal('sys:foo,a:1,b:2')
-  expect(rin('a:1,role:bar', top)).equal('role:bar,a:1')
-  expect(rin('b:2,role:bar,a:1', top)).equal('role:bar,a:1,b:2')
-  expect(rin('sys:foo,a:1,role:bar', top)).equal('role:bar,sys:foo,a:1')
-  expect(rin('b:2,role:bar,a:1,sys:foo', top)).equal('role:bar,sys:foo,a:1,b:2')
+  expect(rin('a:1,sys:foo', top)).equal('"sys":"foo","a":1')
+  expect(rin('b:2,sys:foo,a:1', top)).equal('"sys":"foo","a":1,"b":2')
+  expect(rin('a:1,role:bar', top)).equal('"role":"bar","a":1')
+  expect(rin('b:2,role:bar,a:1', top)).equal('"role":"bar","a":1,"b":2')
+  expect(rin('sys:foo,a:1,role:bar', top)).equal(
+    '"role":"bar","sys":"foo","a":1'
+  )
+  expect(rin('b:2,role:bar,a:1,sys:foo', top)).equal(
+    '"role":"bar","sys":"foo","a":1,"b":2'
+  )
 })
 
 function seneca_instance(config, plugin_options) {

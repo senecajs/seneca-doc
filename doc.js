@@ -21,13 +21,13 @@ const actdoc_schema = Joi.object({
   validate: Joi.object(),
   examples: Joi.object(),
   reply_desc: Joi.object(),
-  path: Joi.string(),
+  path: Joi.string()
 })
 
 // schema for namespacing
 const docdef_schema = Joi.object({
   messages: Joi.object().required(),
-  sections: Joi.object(),
+  sections: Joi.object()
 })
 
 module.exports.preload = function() {
@@ -94,11 +94,8 @@ module.exports.preload = function() {
           if ('function' === typeof docdef) {
             docdef = docdef(seneca, { Joi })
           }
-          
-          docdef = Joi.attempt(
-            docdef,
-            docdef_schema, 'invalid')
-            
+
+          docdef = Joi.attempt(docdef, docdef_schema, 'invalid')
 
           plugin.docdef = docdef
           if (doc_path) {
