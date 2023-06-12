@@ -17,10 +17,17 @@ module.exports.errors = {
 }
 
 const actdoc_schema = Joi.object({
-  desc: Joi.string().required(),
+  desc: Joi.string(),
   validate: Joi.object(),
   examples: Joi.object(),
-  reply_desc: Joi.object()
+  reply_desc: Joi.object(),
+  path: Joi.string(),
+})
+
+// schema for namespacing
+const docdef_schema = Joi.object({
+  messages: Joi.object().required(),
+  sections: Joi.object(),
 })
 
 module.exports.preload = function() {
@@ -87,13 +94,18 @@ module.exports.preload = function() {
           if ('function' === typeof docdef) {
             docdef = docdef(seneca, { Joi })
           }
+          
+          docdef = Joi.attempt(
+            docdef,
+            docdef_schema, 'invalid')
+            
 
           plugin.docdef = docdef
           if (doc_path) {
             plugin.docpath = doc_path
           }
           var actdef_func_name = actdef.func && actdef.func.name
-          actdoc = docdef[actdef_func_name]
+          actdoc = docdef.messages[actdef_func_name]
 
           if (actdoc) {
             actdoc = Joi.attempt(
@@ -116,10 +128,13 @@ module.exports.preload = function() {
       (actdef.func && actdef.func.desc) ||
       actdoc.desc ||
       'No description provided.'
+
     actdef.examples =
       (actdef.func && actdef.func.examples) || actdoc.examples || {}
     actdef.reply_desc =
       (actdef.func && actdef.func.reply_desc) || actdoc.reply_desc || null
+
+    actdef.path = actdoc.path || null
 
     if (actdoc.validate) {
       actdef.rules = actdef.rules || {}
