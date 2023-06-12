@@ -17,10 +17,11 @@ module.exports.errors = {
 }
 
 const actdoc_schema = Joi.object({
-  desc: Joi.string().required(),
+  desc: Joi.string(),
   validate: Joi.object(),
   examples: Joi.object(),
-  reply_desc: Joi.object()
+  reply_desc: Joi.object(),
+  path: Joi.string(),
 })
 
 // schema for namespacing
@@ -127,10 +128,13 @@ module.exports.preload = function() {
       (actdef.func && actdef.func.desc) ||
       actdoc.desc ||
       'No description provided.'
+
     actdef.examples =
       (actdef.func && actdef.func.examples) || actdoc.examples || {}
     actdef.reply_desc =
       (actdef.func && actdef.func.reply_desc) || actdoc.reply_desc || null
+
+    actdef.path = actdoc.path || null
 
     if (actdoc.validate) {
       actdef.rules = actdef.rules || {}
