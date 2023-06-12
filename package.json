@@ -1,6 +1,6 @@
 {
   "name": "@seneca/doc",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "Documentation helper for Seneca plugins.",
   "main": "doc.js",
   "bin": {
