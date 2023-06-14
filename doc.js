@@ -30,6 +30,25 @@ const docdef_schema = Joi.object({
   sections: Joi.object()
 })
 
+const canon_schema = Joi.object({
+  base: Joi.string(),
+  cmd: Joi.string().required(),
+  name: Joi.string().required(),
+  role: Joi.string(),
+  zone: Joi.string()
+})
+
+function build_func_name(actdef) {
+  let msgcanon = actdef.msgcanon || {}
+
+  try {
+    msgcanon = Joi.attempt(msgcanon, canon_schema)
+  } catch(err) {
+    return
+  }
+  return msgcanon.cmd + '_' + msgcanon.name
+}
+
 module.exports.preload = function() {
   const seneca = this
 
@@ -101,7 +120,8 @@ module.exports.preload = function() {
           if (doc_path) {
             plugin.docpath = doc_path
           }
-          var actdef_func_name = actdef.func && actdef.func.name
+          var actdef_func_name = build_func_name(actdef)
+            || (actdef.func && actdef.func.name)
           actdoc = docdef.messages[actdef_func_name]
 
           if (actdoc) {
