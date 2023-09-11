@@ -1,8 +1,9 @@
-/* Copyright (c) 2019 Voxgig Ltd. and other contributors, MIT License */
+/* Copyright (c) 2019-2023 Voxgig Ltd. and other contributors, MIT License */
 'use strict'
 
 const Path = require('path')
 
+// TODO: replace Joi with Gubu
 const Joi = require('@hapi/joi')
 
 module.exports = doc

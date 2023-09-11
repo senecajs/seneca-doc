@@ -1,8 +1,19 @@
-# seneca-doc
+![Seneca Doc-Provider](http://senecajs.org/files/assets/seneca-logo.png)
 
-[![Npm][BadgeNpm]][Npm]
-[![Travis][BadgeTravis]][Travis]
-[![Coveralls][BadgeCoveralls]][Coveralls]
+> _Seneca Doc-Provider_ is a plugin for [Seneca](http://senecajs.org)
+
+
+Provides access to the Doc API using the Seneca *provider*
+convention. Doc API entities are represented as Seneca entities so
+that they can be accessed using the Seneca entity API and messages.
+
+
+
+[![npm version](https://img.shields.io/npm/v/@seneca/doc-provider.svg)](https://npmjs.com/package/@seneca/doc-provider)
+[![build](https://github.com/senecajs/seneca-doc-provider/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-doc-provider/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/senecajs/seneca-doc-provider/badge.svg?branch=main)](https://coveralls.io/github/senecajs/seneca-doc-provider?branch=main)
+[![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-doc-provider/badge.svg)](https://snyk.io/test/github/senecajs/seneca-doc-provider)
+[![DeepScan grade](https://deepscan.io/api/teams/5016/projects/21342/branches/611017/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=5016&pid=21342&bid=611017)
 [![Maintainability](https://api.codeclimate.com/v1/badges/68675302d30a1e3e9447/maintainability)](https://codeclimate.com/github/voxgig/seneca-doc/maintainability)
 
 
