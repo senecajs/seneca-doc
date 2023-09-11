@@ -1,18 +1,16 @@
-![Seneca Doc-Provider](http://senecajs.org/files/assets/seneca-logo.png)
+![Seneca Doc](http://senecajs.org/files/assets/seneca-logo.png)
 
-> _Seneca Doc-Provider_ is a plugin for [Seneca](http://senecajs.org)
-
-
-Provides access to the Doc API using the Seneca *provider*
-convention. Doc API entities are represented as Seneca entities so
-that they can be accessed using the Seneca entity API and messages.
+> _Seneca Doc_ is a plugin for [Seneca](http://senecajs.org)
 
 
+Provides generated documentation for Seneca plugins and injects this 
+documentation into the plugin README.md markdown file.
 
-[![npm version](https://img.shields.io/npm/v/@seneca/doc-provider.svg)](https://npmjs.com/package/@seneca/doc-provider)
-[![build](https://github.com/senecajs/seneca-doc-provider/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-doc-provider/actions/workflows/build.yml)
-[![Coverage Status](https://coveralls.io/repos/senecajs/seneca-doc-provider/badge.svg?branch=main)](https://coveralls.io/github/senecajs/seneca-doc-provider?branch=main)
-[![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-doc-provider/badge.svg)](https://snyk.io/test/github/senecajs/seneca-doc-provider)
+
+[![npm version](https://img.shields.io/npm/v/@seneca/doc.svg)](https://npmjs.com/package/@seneca/doc)
+[![build](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/senecajs/seneca-doc/badge.svg?branch=main)](https://coveralls.io/github/senecajs/seneca-doc?branch=main)
+[![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-doc/badge.svg)](https://snyk.io/test/github/senecajs/seneca-doc)
 [![DeepScan grade](https://deepscan.io/api/teams/5016/projects/21342/branches/611017/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=5016&pid=21342&bid=611017)
 [![Maintainability](https://api.codeclimate.com/v1/badges/68675302d30a1e3e9447/maintainability)](https://codeclimate.com/github/voxgig/seneca-doc/maintainability)
 
