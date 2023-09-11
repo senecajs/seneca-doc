@@ -32,7 +32,8 @@ jobs:
       # manually install peerdeps for node 12,14
     - run: npm i seneca seneca-entity seneca-promisify @seneca/provider @seneca/env
     - run: npm run build --if-present
-    - run: npm run test-nocov
+    - run: npm run test
+    - run: npm run coveralls
 
     - name: Coveralls
       uses: coverallsapp/github-action@master

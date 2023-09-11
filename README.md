@@ -11,7 +11,7 @@ documentation into the plugin README.md markdown file.
 [![build](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/senecajs/seneca-doc/badge.svg?branch=main)](https://coveralls.io/github/senecajs/seneca-doc?branch=main)
 [![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-doc/badge.svg)](https://snyk.io/test/github/senecajs/seneca-doc)
-[![DeepScan grade](https://deepscan.io/api/teams/5016/projects/21342/branches/611017/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=5016&pid=21342&bid=611017)
+[![DeepScan grade](https://deepscan.io/api/teams/5016/projects/25451/branches/796879/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=5016&pid=25451&bid=796879)
 [![Maintainability](https://api.codeclimate.com/v1/badges/68675302d30a1e3e9447/maintainability)](https://codeclimate.com/github/voxgig/seneca-doc/maintainability)
 
 
