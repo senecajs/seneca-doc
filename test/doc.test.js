@@ -8,19 +8,17 @@ const Plugin = require('..')
 const Render = require('../lib/render')
 const Inject = require('../lib/inject')
 
-
-
-describe('doc', ()=>{
+describe('doc', () => {
   test('happy', async () => {
     return await makeSeneca().ready()
   })
 
   test('action-validation', async () => {
     var si = await makeSeneca()
-        .quiet()
-        .use('joi')
-        .use('./p0')
-        .ready()
+      .quiet()
+      .use('joi')
+      .use('./p0')
+      .ready()
 
     // Load from <name>-doc.js
 
@@ -93,7 +91,7 @@ describe('doc', ()=>{
   test('describe-pin', async () => {
     var si = await makeSeneca().ready()
     var out = await si.post('sys:doc,describe:pin', { pin: 'role:seneca' })
-    expect(out.actions.length>0).toEqual(true)
+    expect(out.actions.length > 0).toEqual(true)
   })
 
   test('options_section', async () => {
@@ -161,8 +159,8 @@ e
     })
 
     var out = Fs.readFileSync(__dirname + '/test.md').toString()
-    expect(out.indexOf(foo_text)>-1).toEqual(true)
-    expect(out.indexOf(bar_text)>-1).toEqual(true)
+    expect(out.indexOf(foo_text) > -1).toEqual(true)
+    expect(out.indexOf(bar_text) > -1).toEqual(true)
   })
 
   test('render-intern-nicepat', async () => {
@@ -179,7 +177,6 @@ e
       '"role":"bar","sys":"foo","a":1,"b":2'
     )
   })
-
 })
 
 function makeSeneca(config, plugin_options) {
