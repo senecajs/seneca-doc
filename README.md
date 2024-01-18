@@ -121,7 +121,9 @@ itself.
 
 ## Options
 
-*None.*
+* `test` : boolean
+* `errors` : object
+* `init$` : boolean
 
 
 <!--END:options-->
