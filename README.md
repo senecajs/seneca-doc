@@ -161,7 +161,7 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 #### Parameters
 
 
-* _pin_ : alternatives <i><small>"&nbsp;"</small></i>
+* __pin__ : alternatives <i><small>"&nbsp;"</small></i>
  : The pin sub pattern in string or object format.
 
 
@@ -200,7 +200,7 @@ Provide introspection data for a plugin and its actions.
 #### Parameters
 
 
-* _plugin_ : string <i><small>"&nbsp;"</small></i>
+* __plugin__ : string <i><small>"&nbsp;"</small></i>
  : The full name of the plugin (if tagged, use the form name$tag).
 
 
