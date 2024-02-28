@@ -170,9 +170,7 @@ e
     expect(rin('b:2,sys:foo,a:1', top)).toEqual('sys:foo,a:1,b:2')
     expect(rin('a:1,role:bar', top)).toEqual('role:bar,a:1')
     expect(rin('b:2,role:bar,a:1', top)).toEqual('role:bar,a:1,b:2')
-    expect(rin('sys:foo,a:1,role:bar', top)).toEqual(
-      'role:bar,sys:foo,a:1'
-    )
+    expect(rin('sys:foo,a:1,role:bar', top)).toEqual('role:bar,sys:foo,a:1')
     expect(rin('b:2,role:bar,a:1,sys:foo', top)).toEqual(
       'role:bar,sys:foo,a:1,b:2'
     )
