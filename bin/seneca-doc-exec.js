@@ -32,6 +32,7 @@ async function inspect_local_plugin() {
     .filter(x => '' != x)
 
   const options = {
+    legacy: false,
     plugins: extra_plugins,
     top: top
   }

@@ -46,7 +46,7 @@
   "homepage": "https://github.com/voxgig/seneca-doc#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
-    "seneca": "^3.34.0",
+    "seneca": "^3.34.1",
     "seneca-promisify": "^3.7.1"
   },
   "devDependencies": {

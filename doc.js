@@ -71,22 +71,39 @@ module.exports.preload = function() {
               : Path.dirname(plugin.modulepath)
           }
 
-          var doc_path_file = actdef.plugin_name + '-doc.js'
+          const doc_path_files = [
+            actdef.plugin_name + '-doc.js',
+            actdef.plugin_name + 'Doc.js',
+            'src/'+actdef.plugin_name + '-doc.js',
+            'src/'+actdef.plugin_name + 'Doc.js',
+            'dist/'+actdef.plugin_name + '-doc.js',
+            'dist/'+actdef.plugin_name + 'Doc.js',
+          ]
 
-          try {
-            doc_path = Path.resolve(doc_path_folder, doc_path_file)
-            docdef = require(doc_path)
-          } catch (e) {
+          let doc_path_file
+          for(doc_path_file of doc_path_files) {
             try {
-              doc_path_file = doc_path_file.replace(/_/g, '-')
               doc_path = Path.resolve(doc_path_folder, doc_path_file)
-              docdef = require(Path.resolve(doc_path_folder, doc_path_file))
-            } catch (e) {
-              if ('MODULE_NOT_FOUND' != e.code) {
-                throw e
+              docdef = require(doc_path)
+              break;
+            }
+            catch (e) {
+              try {
+                doc_path_file = doc_path_file.replace(/_/g, '-')
+                doc_path = Path.resolve(doc_path_folder, doc_path_file)
+                docdef = require(Path.resolve(doc_path_folder, doc_path_file))
+                break;
+              }
+              catch (e) {
+                if ('MODULE_NOT_FOUND' != e.code) {
+                  throw e
+                }
               }
             }
           }
+
+          // console.log('FOUND', doc_path_file, docdef)
+          
         }
 
         if (docdef) {
