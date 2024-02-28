@@ -108,15 +108,15 @@ describe('doc', () => {
     var si = await makeSeneca().ready()
     var out = await si.post('sys:doc,describe:plugin', { plugin: 'doc' })
     var md = Render.action_list(out)[0].text
-    expect(md).toContain('"describe":"plugin","sys":"doc"')
-    expect(md).toContain('"describe":"pin","sys":"doc"')
+    expect(md).toContain('describe:plugin,sys:doc')
+    expect(md).toContain('describe:pin,sys:doc')
   })
 
   test('action_desc', async () => {
     var si = await makeSeneca().ready()
     var out = await si.post('sys:doc,describe:plugin', { plugin: 'doc' })
     var md = Render.action_desc(out)[0].text
-    expect(md).toContain('"describe":"plugin","sys":"doc"')
+    expect(md).toContain('describe:plugin,sys:doc')
   })
 
   test('update_source', async () => {
@@ -166,15 +166,15 @@ e
   test('render-intern-nicepat', async () => {
     var rin = Render.intern.nicepat
     var top = ['sys', 'role']
-    expect(rin('a:1,sys:foo', top)).toEqual('"sys":"foo","a":1')
-    expect(rin('b:2,sys:foo,a:1', top)).toEqual('"sys":"foo","a":1,"b":2')
-    expect(rin('a:1,role:bar', top)).toEqual('"role":"bar","a":1')
-    expect(rin('b:2,role:bar,a:1', top)).toEqual('"role":"bar","a":1,"b":2')
+    expect(rin('a:1,sys:foo', top)).toEqual('sys:foo,a:1')
+    expect(rin('b:2,sys:foo,a:1', top)).toEqual('sys:foo,a:1,b:2')
+    expect(rin('a:1,role:bar', top)).toEqual('role:bar,a:1')
+    expect(rin('b:2,role:bar,a:1', top)).toEqual('role:bar,a:1,b:2')
     expect(rin('sys:foo,a:1,role:bar', top)).toEqual(
-      '"role":"bar","sys":"foo","a":1'
+      'role:bar,sys:foo,a:1'
     )
     expect(rin('b:2,role:bar,a:1,sys:foo', top)).toEqual(
-      '"role":"bar","sys":"foo","a":1,"b":2'
+      'role:bar,sys:foo,a:1,b:2'
     )
   })
 })
