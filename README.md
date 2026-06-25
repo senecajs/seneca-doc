@@ -1,26 +1,10 @@
-![Seneca Doc](http://senecajs.org/files/assets/seneca-logo.png)
+![Seneca](http://senecajs.org/files/assets/seneca-logo.png)
+> A [Seneca.js][] plugin
 
-> _Seneca Doc_ is a plugin for [Seneca](http://senecajs.org)
-
-
-Provides generated documentation for Seneca plugins and injects this 
-documentation into the plugin README.md markdown file.
-
-
-[![npm version](https://img.shields.io/npm/v/@seneca/doc.svg)](https://npmjs.com/package/@seneca/doc)
-[![build](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml)
-[![Coverage Status](https://coveralls.io/repos/senecajs/seneca-doc/badge.svg?branch=master)](https://coveralls.io/github/senecajs/seneca-doc?branch=master)
-[![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-doc/badge.svg)](https://snyk.io/test/github/senecajs/seneca-doc)
-[![DeepScan grade](https://deepscan.io/api/teams/5016/projects/25451/branches/796879/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=5016&pid=25451&bid=796879)
-[![Maintainability](https://api.codeclimate.com/v1/badges/83a38bd880993e70afc1/maintainability)](https://codeclimate.com/github/senecajs/seneca-doc/maintainability)
-
+# @seneca/doc
 
 | ![Voxgig](https://www.voxgig.com/res/img/vgt01r.png) | This open source module is sponsored and supported by [Voxgig](https://www.voxgig.com). |
 |---|---|
-
-
-Documentation helper for [Seneca](senecajs.org) plugins.
-
 
 ## Install
 
@@ -44,7 +28,7 @@ And run with
 $ npm run seneca-doc
 ```
 
-## Usage
+## Quick Example
 
 This utility plugin updates the `README.md` file in a Seneca plugin
 repository with auto-generated documentation. Special HTML comment
@@ -83,8 +67,24 @@ within a _test_ subfolder).
 NOTE: must be loaded *before* `seneca-joi` so that the rules are
 available to `seneca-joi`.
 
+## More Examples
 
-## Arguments
+See [test/](test/) for usage examples.
+
+## Motivation
+
+Automatically generates documentation for Seneca plugins based on their action patterns.
+
+## Support
+
+If you're using this module and need help, you can:
+
+- Post a [github issue][]
+- Tweet to [@senecajs][]
+
+## API
+
+### Arguments
 
 The `seneca-doc` command takes the following command line arguments:
 
@@ -118,8 +118,7 @@ itself.
 
 <!--START:options-->
 
-
-## Options
+### Options
 
 * `test` : boolean
 * `errors` : object
@@ -131,104 +130,29 @@ itself.
 
 <!--START:action-list-->
 
+## Contributing
 
-## Action Patterns
+The [Senecajs org][] encourages open participation. If you feel you can help in any way, be it with documentation, examples, extra testing, or new features please get in touch.
 
-* [sys:doc,describe:pin](#-sysdocdescribepin-)
-* [sys:doc,describe:plugin](#-sysdocdescribeplugin-)
+### Running tests
 
-
-<!--END:action-list-->
-
-<!--START:action-desc-->
-
-
-## Action Descriptions
-
-### &laquo; `sys:doc,describe:pin` &raquo;
-
-Provide introspection data for actions matching a _pin_ (a sub pattern).
-
-
-
-
-#### Examples
-
-
-
-* `sys:doc,describe:pin,pin:"a:1,b:2"`
-  * Describe actions matching at least `a:1,b:2`.
-#### Parameters
-
-
-* __pin__ : alternatives <i><small>"&nbsp;"</small></i>
- : The pin sub pattern in string or object format.
-
-
-
-
-#### Replies With
-
-
-```
-{
-  pin: 'pin parameter',
-  actions: [
-    '{ Seneca action definition }'
-  ]
-}
+```sh
+npm run test
 ```
 
+## Background
 
-----------
-### &laquo; `sys:doc,describe:plugin` &raquo;
+Generates markdown documentation from Seneca action pattern definitions.
 
-Provide introspection data for a plugin and its actions.
-
-
-
-
-#### Examples
-
-
-
-* `sys:doc,describe:plugin,plugin:entity`
-  * Describe the seneca-entity plugin.
-
-* `sys:doc,describe:plugin,plugin:entity$foo`
-  * Describe the seneca-entity plugin instance with tag _foo_.
-#### Parameters
-
-
-* __plugin__ : string <i><small>"&nbsp;"</small></i>
- : The full name of the plugin (if tagged, use the form name$tag).
-
-
-
-
-#### Replies With
-
-
-```
-{
-  plugin: 'plugin parameter',
-  actions: [
-    '{ Seneca action definition }'
-  ]
-}
-```
-
-
-----------
-
-
-<!--END:action-desc-->
-
-
+[![npm version](https://img.shields.io/npm/v/@seneca/doc.svg)](https://npmjs.com/package/@seneca/doc)
+[![build](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/senecajs/seneca-doc/badge.svg?branch=master)](https://coveralls.io/github/senecajs/seneca-doc?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-doc/badge.svg)](https://snyk.io/test/github/senecajs/seneca-doc)
+[![DeepScan grade](https://deepscan.io/api/teams/5016/projects/25451/branches/796879/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=5016&pid=25451&bid=796879)
+[![Maintainability](https://api.codeclimate.com/v1/badges/83a38bd880993e70afc1/maintainability)](https://codeclimate.com/github/senecajs/seneca-doc/maintainability)
 [BadgeCoveralls]: https://coveralls.io/repos/voxgig/seneca-doc/badge.svg?branch=master&service=github
 [BadgeNpm]: https://badge.fury.io/js/%40seneca%2Fdoc.svg
 [BadgeTravis]: https://travis-ci.org/voxgig/seneca-doc.svg?branch=master
 [Coveralls]: https://coveralls.io/github/voxgig/seneca-doc?branch=master
 [Npm]: https://www.npmjs.com/package/@seneca/doc
 [Travis]: https://travis-ci.org/voxgig/seneca-doc?branch=master
-
