@@ -85,8 +85,10 @@ Automatically generates documentation for Seneca plugins based on their action p
 
 If you're using this module and need help, you can:
 
-- Post a [github issue][]
-- Tweet to [@senecajs][]
+- Post a [github issue](https://github.com/senecajs/seneca-doc/issues)
+- Tweet to [@senecajs](http://twitter.com/senecajs)
+- Ask on the [Gitter](https://gitter.im/senecajs/seneca)
+
 
 ## API
 
