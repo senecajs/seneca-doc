@@ -84,6 +84,117 @@ If you're using this module and need help, you can:
 
 ## API
 
+### Options
+
+* `test` : boolean
+* `errors` : object
+* `init$` : boolean
+
+
+<!--END:options-->
+
+
+<!--START:action-list-->
+
+### Action Patterns
+
+* [sys:doc,describe:pin](#-sysdocdescribepin-)
+* [sys:doc,describe:plugin](#-sysdocdescribeplugin-)
+
+
+<!--END:action-list-->
+
+<!--START:action-desc-->
+
+### Action Descriptions
+
+### &laquo; `sys:doc,describe:pin` &raquo;
+
+Provide introspection data for actions matching a _pin_ (a sub pattern).
+
+
+
+
+#### Examples
+
+
+
+* `sys:doc,describe:pin,pin:"a:1,b:2"`
+  * Describe actions matching at least `a:1,b:2`.
+#### Parameters
+
+
+* __pin__ : alternatives <i><small>"&nbsp;"</small></i>
+ : The pin sub pattern in string or object format.
+
+
+
+
+#### Replies With
+
+
+```
+{
+  pin: 'pin parameter',
+  actions: [
+    '{ Seneca action definition }'
+  ]
+}
+```
+
+
+----------
+### &laquo; `sys:doc,describe:plugin` &raquo;
+
+Provide introspection data for a plugin and its actions.
+
+
+
+
+#### Examples
+
+
+
+* `sys:doc,describe:plugin,plugin:entity`
+  * Describe the seneca-entity plugin.
+
+* `sys:doc,describe:plugin,plugin:entity$foo`
+  * Describe the seneca-entity plugin instance with tag _foo_.
+#### Parameters
+
+
+* __plugin__ : string <i><small>"&nbsp;"</small></i>
+ : The full name of the plugin (if tagged, use the form name$tag).
+
+
+
+
+#### Replies With
+
+
+```
+{
+  plugin: 'plugin parameter',
+  actions: [
+    '{ Seneca action definition }'
+  ]
+}
+```
+
+
+----------
+
+
+<!--END:action-desc-->
+
+
+[BadgeCoveralls]: https://coveralls.io/repos/voxgig/seneca-doc/badge.svg?branch=master&service=github
+[BadgeNpm]: https://badge.fury.io/js/%40seneca%2Fdoc.svg
+[BadgeTravis]: https://travis-ci.org/voxgig/seneca-doc.svg?branch=master
+[Coveralls]: https://coveralls.io/github/voxgig/seneca-doc?branch=master
+[Npm]: https://www.npmjs.com/package/@seneca/doc
+[Travis]: https://travis-ci.org/voxgig/seneca-doc?branch=master
+
 ### Arguments
 
 The `seneca-doc` command takes the following command line arguments:
@@ -118,21 +229,48 @@ itself.
 
 <!--START:options-->
 
-### Options
+### Usage
 
-* `test` : boolean
-* `errors` : object
-* `init$` : boolean
+This utility plugin updates the `README.md` file in a Seneca plugin
+repository with auto-generated documentation. Special HTML comment
+markers are used to indicate the insertion point, and all markdown
+within these markers is replaced.
 
+* _&lt;!--START:action-list--&gt; ... &lt;!--END:action-list--&gt;_
+  * Inserts a list of action patterns defined by the plugin
+* _&lt;!--START:action-desc--&gt; ... &lt;!--END:action-desc--&gt;_
+  * Inserts more detailed action descriptions (linked to by _action-list_)
 
-<!--END:options-->
+In the top level folder of your project, create a module called
+`plugin-doc.js` where _plugin_ is the name of your plugin. This should
+return an object whose keys are the names of the action functions in
+your plugin. Each key should define an action description with
+properties as defined below. For an example,
+see [doc-doc.js](doc-doc.js) which defines the documentation for this
+plugin.
 
+Alternatively, return the same data structure from your plugin
+definition under the `doc` property.
 
-<!--START:action-list-->
+The export `doc/generating` will be `true` if documentation is being
+generated. You can use this handle cases where your plugin has
+additional dependencies that fail when it is loaded direcly by
+_seneca-doc_.
+
+See the unit tests for examples of usage.
+
+NOTE: Plugins must be loaded via `seneca.use()` for validation to
+activate (as well as depending on a validation plugin such as as
+`seneca-joi`). In particular, when testing, ensure that the plugin
+under test is loaded with `seneca.use('..')` (assuming tests are
+within a _test_ subfolder).
+
+NOTE: must be loaded *before* `seneca-joi` so that the rules are
+available to `seneca-joi`.
 
 ## Contributing
 
-The [Senecajs org][] encourages open participation. If you feel you can help in any way, be it with documentation, examples, extra testing, or new features please get in touch.
+The [Senecajs org][] encourages open participation.
 
 ### Running tests
 
