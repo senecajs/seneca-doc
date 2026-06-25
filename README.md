@@ -289,12 +289,6 @@ npm run test
 
 Generates markdown documentation from Seneca action pattern definitions.
 
-[![npm version](https://img.shields.io/npm/v/@seneca/doc.svg)](https://npmjs.com/package/@seneca/doc)
-[![build](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml)
-[![Coverage Status](https://coveralls.io/repos/senecajs/seneca-doc/badge.svg?branch=master)](https://coveralls.io/github/senecajs/seneca-doc?branch=master)
-[![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-doc/badge.svg)](https://snyk.io/test/github/senecajs/seneca-doc)
-[![DeepScan grade](https://deepscan.io/api/teams/5016/projects/25451/branches/796879/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=5016&pid=25451&bid=796879)
-[![Maintainability](https://api.codeclimate.com/v1/badges/83a38bd880993e70afc1/maintainability)](https://codeclimate.com/github/senecajs/seneca-doc/maintainability)
 [BadgeCoveralls]: https://coveralls.io/repos/voxgig/seneca-doc/badge.svg?branch=master&service=github
 [BadgeNpm]: https://badge.fury.io/js/%40seneca%2Fdoc.svg
 [BadgeTravis]: https://travis-ci.org/voxgig/seneca-doc.svg?branch=master
