@@ -66,6 +66,35 @@ If you're using this module and need help, you can:
 
 ## API
 
+### Usage
+
+In the top level folder of your project, create a module called
+`plugin-doc.js` where _plugin_ is the name of your plugin. This should
+return an object whose keys are the names of the action functions in
+your plugin. Each key should define an action description with
+properties as defined below. For an example,
+see [doc-doc.js](doc-doc.js) which defines the documentation for this
+plugin.
+
+Alternatively, return the same data structure from your plugin
+definition under the `doc` property.
+
+The export `doc/generating` will be `true` if documentation is being
+generated. You can use this to handle cases where your plugin has
+additional dependencies that fail when it is loaded directly by
+_seneca-doc_.
+
+See the unit tests for examples of usage.
+
+NOTE: Plugins must be loaded via `seneca.use()` for validation to
+activate (as well as depending on a validation plugin such as
+`seneca-joi`). In particular, when testing, ensure that the plugin
+under test is loaded with `seneca.use('..')` (assuming tests are
+within a _test_ subfolder).
+
+NOTE: must be loaded *before* `seneca-joi` so that the rules are
+available to `seneca-joi`.
+
 ### Arguments
 
 The `seneca-doc` command takes the following command line arguments:
