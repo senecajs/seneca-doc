@@ -1,5 +1,5 @@
 ![Seneca](http://senecajs.org/files/assets/seneca-logo.png)
-> A [Seneca.js][] plugin
+> A [Seneca.js](http://senecajs.org) plugin
 
 # @seneca/doc
 
