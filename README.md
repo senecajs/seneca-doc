@@ -16,7 +16,7 @@
 
 ```sh
 $ npm install @seneca/doc -D
-```
+```sh
 
 Add to your `package.json`:
 
@@ -26,13 +26,13 @@ Add to your `package.json`:
     "seneca-doc": "seneca-doc"
   }
 }
-```
+```sh
 
 And run with
 
 ```sh
 $ npm run seneca-doc
-```
+```js
 
 ## Quick Example
 
@@ -128,14 +128,14 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 
 #### Replies With
 
-```
+```json
 {
   pin: 'pin parameter',
   actions: [
     '{ Seneca action definition }'
   ]
 }
-```
+```sh
 
 ----------
 ### &laquo; `sys:doc,describe:plugin` &raquo;
@@ -156,14 +156,14 @@ Provide introspection data for a plugin and its actions.
 
 #### Replies With
 
-```
+```json
 {
   plugin: 'plugin parameter',
   actions: [
     '{ Seneca action definition }'
   ]
 }
-```
+```js
 
 ----------
 
@@ -253,7 +253,7 @@ The [Senecajs org][] encourages open participation.
 
 ```sh
 npm run test
-```
+```sh
 
 ## Background
 
