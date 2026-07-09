@@ -1,10 +1,25 @@
-# seneca-doc
+![Seneca Doc](http://senecajs.org/files/assets/seneca-logo.png)
 
-[![Npm][BadgeNpm]][Npm]
-[![Travis][BadgeTravis]][Travis]
-[![Coveralls][BadgeCoveralls]][Coveralls]
-[![Maintainability](https://api.codeclimate.com/v1/badges/68675302d30a1e3e9447/maintainability)](https://codeclimate.com/github/voxgig/seneca-doc/maintainability)
+> _Seneca Doc_ is a plugin for [Seneca](http://senecajs.org)
 
+
+Provides generated documentation for Seneca plugins and injects this 
+documentation into the plugin README.md markdown file.
+
+
+[![npm version](https://img.shields.io/npm/v/@seneca/doc.svg)](https://npmjs.com/package/@seneca/doc)
+[![build](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-doc/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/senecajs/seneca-doc/badge.svg?branch=master)](https://coveralls.io/github/senecajs/seneca-doc?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-doc/badge.svg)](https://snyk.io/test/github/senecajs/seneca-doc)
+[![DeepScan grade](https://deepscan.io/api/teams/5016/projects/25451/branches/796879/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=5016&pid=25451&bid=796879)
+[![Maintainability](https://api.codeclimate.com/v1/badges/83a38bd880993e70afc1/maintainability)](https://codeclimate.com/github/senecajs/seneca-doc/maintainability)
+
+
+| ![Voxgig](https://www.voxgig.com/res/img/vgt01r.png) | This open source module is sponsored and supported by [Voxgig](https://www.voxgig.com). |
+|---|---|
+
+| ![Voxgig](https://www.voxgig.com/res/img/vgt01r.png) | This open source module is sponsored and supported by [Voxgig](https://www.voxgig.com). |
+|---|---|
 
 Documentation helper for [Seneca](senecajs.org) plugins.
 
@@ -108,7 +123,9 @@ itself.
 
 ## Options
 
-*None.*
+* `test` : boolean
+* `errors` : object
+* `init$` : boolean
 
 
 <!--END:options-->
@@ -119,8 +136,8 @@ itself.
 
 ## Action Patterns
 
-* ["sys":"doc","describe":"pin"](#-sysdocdescribepin-)
-* ["sys":"doc","describe":"plugin"](#-sysdocdescribeplugin-)
+* [sys:doc,describe:pin](#-sysdocdescribepin-)
+* [sys:doc,describe:plugin](#-sysdocdescribeplugin-)
 
 
 <!--END:action-list-->
@@ -130,7 +147,7 @@ itself.
 
 ## Action Descriptions
 
-### &laquo; `"sys":"doc","describe":"pin"` &raquo;
+### &laquo; `sys:doc,describe:pin` &raquo;
 
 Provide introspection data for actions matching a _pin_ (a sub pattern).
 
@@ -141,12 +158,12 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 
 
 
-* `"sys":"doc","describe":"pin",pin:"a:1,b:2"`
+* `sys:doc,describe:pin,pin:"a:1,b:2"`
   * Describe actions matching at least `a:1,b:2`.
 #### Parameters
 
 
-* _pin_ : alternatives <i><small>"&nbsp;"</small></i>
+* __pin__ : alternatives <i><small>"&nbsp;"</small></i>
  : The pin sub pattern in string or object format.
 
 
@@ -166,7 +183,7 @@ Provide introspection data for actions matching a _pin_ (a sub pattern).
 
 
 ----------
-### &laquo; `"sys":"doc","describe":"plugin"` &raquo;
+### &laquo; `sys:doc,describe:plugin` &raquo;
 
 Provide introspection data for a plugin and its actions.
 
@@ -177,15 +194,15 @@ Provide introspection data for a plugin and its actions.
 
 
 
-* `"sys":"doc","describe":"plugin",plugin:entity`
+* `sys:doc,describe:plugin,plugin:entity`
   * Describe the seneca-entity plugin.
 
-* `"sys":"doc","describe":"plugin",plugin:entity$foo`
+* `sys:doc,describe:plugin,plugin:entity$foo`
   * Describe the seneca-entity plugin instance with tag _foo_.
 #### Parameters
 
 
-* _plugin_ : string <i><small>"&nbsp;"</small></i>
+* __plugin__ : string <i><small>"&nbsp;"</small></i>
  : The full name of the plugin (if tagged, use the form name$tag).
 
 
