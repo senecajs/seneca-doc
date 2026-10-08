@@ -3,13 +3,19 @@
 
 const Path = require('path')
 
-// TODO: replace Joi with Gubu
+// Doc definitions are validated with Joi. Seneca 4 no longer provides
+// Joi (seneca.util.Joi), so this plugin carries its own copy.
 const Joi = require('@hapi/joi')
 
 module.exports = doc
 
 module.exports.defaults = {
-  test: false
+  // Not read by this plugin; kept for compatibility with older options.
+  test: false,
+
+  // True when the seneca-doc command line tool is generating
+  // documentation. Exported as `doc/generating`.
+  generating: false
 }
 
 module.exports.errors = {
@@ -17,6 +23,7 @@ module.exports.errors = {
   pin_missing: 'Pin missing from message: <%=msg%>'
 }
 
+// Documentation of a single action, keyed by action function name.
 const actdoc_schema = Joi.object({
   desc: Joi.string(),
   validate: Joi.object(),
@@ -25,12 +32,16 @@ const actdoc_schema = Joi.object({
   path: Joi.string()
 })
 
-// schema for namespacing
+// A doc definition: the messages of a plugin, and optional README sections.
 const docdef_schema = Joi.object({
   messages: Joi.object().required(),
   sections: Joi.object()
 })
 
+// Resolve the doc definition of a plugin, in order of preference: the
+// `doc` property of the plugin meta data (returned by the definition
+// function), the `doc` (or `docdef`) property of the definition function,
+// or a `<name>-doc.js` file next to the plugin module.
 module.exports.preload = function() {
   const seneca = this
 
@@ -54,7 +65,10 @@ module.exports.preload = function() {
         }
 
         // NOTE `doc` is preferred as consistent with meta
-        else if (plugin.define.doc || plugin.define.docdef) {
+        else if (
+          plugin.define &&
+          (plugin.define.doc || plugin.define.docdef)
+        ) {
           docdef = plugin.define.doc || plugin.define.docdef
         }
 
@@ -99,13 +113,12 @@ module.exports.preload = function() {
               }
             }
           }
-
-          // console.log('FOUND', doc_path_file, docdef)
         }
 
         if (docdef) {
-          // TODO: document this as it should be prefered way to define Joi schemas
-          // in doc definition
+          // A doc definition may be a function that receives the Seneca
+          // instance and utilities (the Joi copy used by this plugin), so
+          // that the plugin does not need its own Joi dependency.
           if ('function' === typeof docdef) {
             docdef = docdef(seneca, { Joi })
           }
@@ -157,7 +170,6 @@ module.exports.preload = function() {
 
 function doc(options) {
   const seneca = this
-  const Joi = seneca.util.Joi
 
   seneca
     .add('sys:doc,describe:plugin', describe_plugin_msg)
@@ -179,8 +191,10 @@ function doc(options) {
         )
     },
     reply_desc: {
+      def: '{ Seneca plugin record }',
       plugin: 'plugin parameter',
-      actions: ['{ Seneca action definition }']
+      actions: ['{ Seneca action definition }'],
+      options_shape: '{ Gubu shape of the plugin options, or null }'
     }
   })
 
@@ -199,6 +213,7 @@ function doc(options) {
     var def = instance.find_plugin(msg.plugin)
 
     var plugin = msg.plugin.replace(/-/g, '_')
+    var names = [msg.plugin, plugin]
 
     var actions = []
     var list = instance.list()
@@ -207,7 +222,10 @@ function doc(options) {
 
       var actdef = instance.find(pat)
 
-      if (actdef.plugin.name == plugin || actdef.plugin.fullname == plugin) {
+      if (
+        names.includes(actdef.plugin.name) ||
+        names.includes(actdef.plugin.fullname)
+      ) {
         actions.push(actdef)
       }
     })
@@ -215,7 +233,8 @@ function doc(options) {
     return {
       def: def,
       plugin: plugin,
-      actions: actions
+      actions: actions,
+      options_shape: intern.options_shape(instance, def)
     }
   }
 
@@ -252,3 +271,52 @@ function doc(options) {
     }
   }
 }
+
+const intern = (module.exports.intern = {
+  // The Gubu shape of a plugin's options. Seneca 3 records it on the plugin
+  // record (`options_shape`); Seneca 4 does not, so build it from the
+  // plugin `defaults` when they are a plain object or a Gubu shape.
+  options_shape: function(instance, def) {
+    if (null == def) {
+      return null
+    }
+
+    if (def.options_shape) {
+      return def.options_shape
+    }
+
+    const Gubu = instance.valid || (instance.util && instance.util.Gubu)
+    let defaults = def.defaults
+
+    if ('function' === typeof defaults && !defaults.gubu) {
+      defaults = defaults({ valid: Gubu, Joi: instance.util.Joi || Joi })
+    }
+
+    if (null == defaults) {
+      return null
+    }
+
+    if (defaults.gubu) {
+      return defaults
+    }
+
+    // Joi schemas are rendered from `options_schema` when Seneca records it.
+    if (
+      'object' !== typeof defaults ||
+      defaults.$_root ||
+      Joi.isSchema(defaults, { legacy: true })
+    ) {
+      return null
+    }
+
+    if ('function' !== typeof Gubu) {
+      return null
+    }
+
+    try {
+      return Gubu(defaults)
+    } catch (e) {
+      return null
+    }
+  }
+})
