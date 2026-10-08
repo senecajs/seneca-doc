@@ -19,6 +19,7 @@ const argv = Minimist(process.argv)
 inspect_local_plugin()
 
 async function inspect_local_plugin() {
+  // NOTE: use -p for each additional plugin to load (by module name)
   let parg = argv.p
   const extra_plugins = Array.isArray(parg)
     ? parg
@@ -28,7 +29,7 @@ async function inspect_local_plugin() {
 
   // NOTE: use -t for further top level names
   const top = ['role', 'sys']
-    .concat((argv.t || '').split(','))
+    .concat(String(argv.t || '').split(','))
     .filter(x => '' != x)
 
   const options = {

@@ -1,0 +1,35 @@
+From 16cefba6030dff7bec183e8958d01d76af33373a Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 8 Oct 2026 07:14:09 +0000
+Subject: [PATCH] ci: run the build workflow on master and main
+
+The default branch of this repository is master, but the workflow only
+triggered on pushes and pull requests to main, so it never ran for the
+default branch. Trigger on both. The Node.js 24.x and 22.x matrix on
+Linux, Windows and macOS is unchanged.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LaHppcejXbSsAH4BZXNsjV
+---
+ .github/workflows/build.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
+index a030080..fabe82a 100644
+--- a/.github/workflows/build.yml
++++ b/.github/workflows/build.yml
+@@ -2,9 +2,9 @@ name: build
+ 
+ on:
+   push:
+-    branches: [main]
++    branches: [master, main]
+   pull_request:
+-    branches: [main]
++    branches: [master, main]
+ 
+ jobs:
+   build:
+-- 
+2.43.0
+

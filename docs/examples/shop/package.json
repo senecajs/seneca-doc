@@ -1,0 +1,9 @@
+{
+  "name": "seneca-shop",
+  "version": "0.1.0",
+  "description": "Example plugin documented with @seneca/doc.",
+  "main": "shop.js",
+  "scripts": {
+    "doc": "seneca-doc"
+  }
+}
