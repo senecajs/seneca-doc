@@ -88,7 +88,7 @@ The plugin supports both, with these differences in what it does:
 | ----- | -------- | -------- |
 | Joi | `seneca.util.Joi` exists. | Not provided; `@seneca/doc` uses its own `@hapi/joi` and passes it to doc definitions in function form. |
 | Options shape | Recorded on the plugin record (`options_shape`) when options are validated with Gubu, as with the tool's `legacy: false`; with the default Joi option validation `@seneca/doc` builds it from `defaults`. | Not recorded; `@seneca/doc` builds it from `defaults` with `seneca.valid`. |
-| `init$` directive | Accepted in the options passed to `use()`. | Rejected by option validation for plugins with `defaults`; the tool sets it on the resolved options instead. |
+| `init$` directive | Accepted in the options passed to `use()`. | Rejected by option validation for plugins with `defaults` in 4.0.0-rc5 (accepted again with the core fix in senecajs/seneca#953); the tool sets it on the resolved options, which works on both. |
 | `ready()` | Callback, or promise with seneca-promisify. | Built in promise, but the tool uses the callback form because the promise form does not resolve on an idle instance in 4.0.0-rc5. |
 | Fatal errors | Terminate the process. | Terminate the process in 4.0.0; not in 4.0.0-rc5, so the tool sets its exit code itself. |
 

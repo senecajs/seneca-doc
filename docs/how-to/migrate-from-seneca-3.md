@@ -75,14 +75,16 @@ the promise form is fixed in 4.0.0.
 seneca-promisify (the plugin is a no-op on Seneca 4). `@seneca/doc`
 itself no longer depends on it on either version.
 
-## 7. Do not pass `init$` to plugins with defaults
+## 7. Do not pass `init$` to plugins with defaults on 4.0.0-rc
 
-Seneca 4 option validation rejects the `init$` directive (and other
-unknown keys) in the options of a plugin that declares `defaults`
-(`invalid_plugin_option`). Code that loaded a plugin with
-`seneca.use(plugin, { init$: false })` to skip its init action, as
-`@seneca/doc` 8.0 did, fails there. The `seneca-doc` tool now sets the
-directive on the resolved options instead, on both versions.
+Seneca 4 option validation rejects unknown keys in the options of a
+plugin that declares `defaults` (`invalid_plugin_option`). In
+4.0.0-rc5 this includes the `init$` directive, so code that loaded a
+plugin with `seneca.use(plugin, { init$: false })` to skip its init
+action, as `@seneca/doc` 8.0 did, fails there. The core fix
+(senecajs/seneca#953, for 4.0.0) accepts the directives again, as
+Seneca 3 does. The `seneca-doc` tool sets the directive on the resolved
+options instead, which works on every version.
 
 ## 8. Nothing changes in the generator workflow
 
