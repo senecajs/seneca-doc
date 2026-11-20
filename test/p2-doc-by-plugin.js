@@ -1,12 +1,12 @@
 module.exports = function(seneca, docutil) {
-  var Joi = docutil.Joi
+  var valid = docutil.valid
 
   return {
     messages: {
       a1: {
         desc: 'a1',
         validate: {
-          x: Joi.string()
+          x: valid.Required(String)
         }
       }
     }

@@ -54,13 +54,13 @@ dependency with `-p`, as the fully qualified module name installed in
 `node_modules`:
 
 ```sh
-seneca-doc -p seneca-entity -p @seneca/graph
+seneca-doc -p @seneca/entity -p @seneca/graph
 ```
 
 ```json
 {
   "scripts": {
-    "doc": "seneca-doc -p seneca-entity"
+    "doc": "seneca-doc -p @seneca/entity"
   }
 }
 ```

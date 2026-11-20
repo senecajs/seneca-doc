@@ -1,11 +1,11 @@
-const Joi = require('@hapi/joi')
+const { valid } = require('seneca')
 
 module.exports = {
   messages: {
     a1: {
       desc: 'a1',
       validate: {
-        x: Joi.string()
+        x: valid.Required(String)
       }
     }
   }

@@ -1,4 +1,62 @@
-## 8.1.0 2026-10-07
+# Changes
+
+## 9.0.0 2026-11-20
+
+Seneca 4 release. Seneca 3 users stay on `@seneca/doc` 8.0.x. Version
+8.1.0 was prepared but never published; its changes, listed below, are
+part of this release, as amended here.
+
+* Seneca 4: the peer dependency is `seneca` `^4.0.0`, and Seneca 3 is no
+  longer supported.
+* Node.js 24 or later (`engines.node` `>=24`).
+* `@hapi/joi` is no longer a dependency (B2). Doc definitions are
+  validated with the Shape builders of Seneca (`seneca.valid`); their
+  error messages are Shape messages after the same `invalid` and
+  `action <pattern> (<name>) documentation invalid` prefixes.
+* Breaking: a doc definition in function form receives `{ valid }`, the
+  Shape builders of Seneca, instead of `{ Joi }`. Reading `Joi` from it
+  throws an error that says so. Write `validate` rules with `valid`,
+  for example `valid.Required(String).Describe('Item identifier.')`, or
+  require Joi from your own dependencies.
+* The `validate` annotations of `sys:doc,describe:plugin` and
+  `sys:doc,describe:pin` are Shape rules instead of Joi schemas.
+* Rendering recognises Shape 11 shapes and nodes (the `shape$` marker)
+  instead of Gubu ones (B1), so the Options section and the Parameters
+  of actions with pattern rules are generated on Seneca 4.0.0 again.
+  Descriptions set with `.Describe('...')` are rendered after the type,
+  for options and for parameters. Joi schemas in `validate` rules are
+  still rendered when the plugin brings its own Joi.
+* Breaking: the options shape is built only from the plugin `defaults`
+  (a plain object, a shape, or a function of `{ valid }`); the Seneca 3
+  plugin record fields `options_shape` and the Joi `options_schema` are
+  no longer read, and the renderer no longer has a Joi options walker
+  (`intern.walk_joi_options`). `intern.walk_gubu_options` and
+  `intern.gubuflags` of `lib/render.js` are renamed
+  `walk_shape_options` and `shapeflags`.
+* The renderer reads `actdef.shape` instead of the deprecated
+  `actdef.gubu` (D2, `SENECA_DEP_ACTDEF_GUBU`), and the tests use
+  `Seneca.valid` instead of `seneca.util.Gubu` (D2,
+  `SENECA_DEP_UTIL_GUBU`). The test run prints no `SENECA_DEP_*`
+  warning.
+* New module `lib/kinds.js` recognises shapes, shape nodes and Joi
+  schemas by their markers.
+* The `seneca-doc` tool awaits `seneca.ready()`.
+* Tests: the `action-validation` test, which loaded seneca-joi to
+  enforce the Joi rules of doc definitions, is removed with the
+  seneca-joi development dependency. A new test checks that `validate`
+  rules are documentation only; others cover the `{ valid }` utilities,
+  doc definition validation and Joi rendering without Joi.
+* Package: `publishConfig.access` is `public`; `package-lock.json` is no
+  longer committed.
+* Documentation: the Joi how-to is replaced by
+  [Describe message parameters](docs/how-to/describe-message-parameters.md),
+  and the tutorial, the example, the reference pages, the migration
+  guide and the explanation describe Seneca 4 only.
+
+### Prepared as 8.1.0 (2026-10-07, not published)
+
+Where these items mention Seneca 3, the Seneca 4 prerelease, Node.js
+22, `@hapi/joi` or seneca-joi, the list above applies instead.
 
 * Seneca 4 prerelease support (4.0.0-rc5 and later), while keeping Seneca
   3 support. `seneca` is now a peer dependency (`>=3 || >=4.0.0-rc5`)

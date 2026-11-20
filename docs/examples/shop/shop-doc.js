@@ -1,7 +1,7 @@
 // Documentation of the shop plugin messages, keyed by action function name.
-// The function form receives the Seneca instance and the Joi copy used by
-// @seneca/doc, so this file needs no dependency of its own.
-module.exports = function (seneca, { Joi }) {
+// The function form receives the Seneca instance and `valid`, the Shape
+// builders of Seneca, so this file needs no dependency of its own.
+module.exports = function (seneca, { valid }) {
   return {
     messages: {
       price: {
@@ -18,12 +18,8 @@ module.exports = function (seneca, { Joi }) {
       stock: {
         desc: 'Report the stock level of an item.',
         validate: {
-          item: Joi.string()
-            .required()
-            .description('Item identifier.'),
-          warehouse: Joi.string()
-            .default('main')
-            .description('Warehouse name.')
+          item: valid.Required(String).Describe('Item identifier.'),
+          warehouse: valid.Default('main').Describe('Warehouse name.')
         },
         reply_desc: {
           item: 'item identifier',

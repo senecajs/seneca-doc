@@ -27,13 +27,15 @@ times for a plugin with three actions, in a test), so it should return
 the same definition every time and have no side effects:
 
 ```js
-module.exports = function (seneca, { Joi }) {
+module.exports = function (seneca, { valid }) {
   return { messages: { ... } }
 }
 ```
 
-`Joi` is the `@hapi/joi` copy used by `@seneca/doc`, so that doc files
-can build Joi rules without their own Joi dependency.
+`valid` is `seneca.valid`, the Shape builders of Seneca, so that doc
+files can build parameter rules without requiring `seneca`. Before
+9.0.0 the utilities object had `Joi`, a copy of `@hapi/joi`; reading
+`Joi` now throws an error that says so.
 
 ## Message documentation
 
@@ -43,7 +45,7 @@ property is allowed.
 | Property | Type | Meaning |
 | -------- | ---- | ------- |
 | `desc` | string | One sentence describing the action. Rendered first; default `No description provided.`. |
-| `validate` | object | Rules describing message properties: keys are property names, values are Joi schemas (rendered with type, `required` or default, and `description`) or other values (rendered with `util.inspect`). Merged into the action's `rules`. Not enforced by `@seneca/doc` or by Seneca; enforced by seneca-joi when it is loaded after `@seneca/doc`. |
+| `validate` | object | Rules describing message properties: keys are property names, values are Shape rules such as `valid.Required(String).Describe('...')` (rendered with type, optional with default, and description), Joi schemas from the plugin's own Joi (rendered with type, `required` or default, and `description`), or other values (rendered with `util.inspect`). Merged into the action's `rules`. Not enforced by `@seneca/doc` or by Seneca: Seneca enforces only the rules in the action pattern. |
 | `examples` | object | Keys are extra pattern properties as a string (`'item:apple,quantity:2'`), values describe the case. Rendered as `<pattern>,<key>` followed by the description. |
 | `reply_desc` | object | A literal object showing the structure of the reply. Rendered with `util.inspect` under `#### Replies With`. |
 | `path` | string | Path of a file whose content replaces the generated description of the action in the README. Relative to the working directory of the `seneca-doc` tool. Only the tool reads it. |
@@ -67,7 +69,7 @@ these precedence rules:
 | `fn.desc` | `@seneca/doc` | Used instead of the doc definition's `desc`. |
 | `fn.examples` | `@seneca/doc` | Used instead of the doc definition's `examples`. |
 | `fn.reply_desc` | `@seneca/doc` | Used instead of the doc definition's `reply_desc`. |
-| `fn.validate` | Seneca (3 and 4) | Merged into the action's `rules` by Seneca's own action modifier, which runs before the `@seneca/doc` modifier. |
+| `fn.validate` | Seneca | Merged into the action's `rules` by Seneca's own action modifier, which runs before the `@seneca/doc` modifier. Documentation only, like the doc definition's `validate`. |
 
 ## Where doc definitions are found
 

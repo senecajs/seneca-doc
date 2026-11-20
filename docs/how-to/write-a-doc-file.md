@@ -78,20 +78,21 @@ An action whose function has no entry in `messages` is documented as
 description; any other property is an error that stops the process
 when the plugin's actions are added (see [Errors](../reference/errors.md#doc-definition-validation-errors)).
 
-## 3. Use the function form for Joi rules
+## 3. Use the function form for parameter rules
 
-To describe parameters with Joi without adding Joi to your own
-dependencies, export a function. It receives the Seneca instance and an
-object with the `Joi` copy used by `@seneca/doc`:
+To describe parameters with the Shape builders of Seneca without
+requiring `seneca` in the doc file, export a function. It receives the
+Seneca instance and an object with `valid`, the Shape builders
+(`seneca.valid`):
 
 ```js
-module.exports = function (seneca, { Joi }) {
+module.exports = function (seneca, { valid }) {
   return {
     messages: {
       stock: {
         desc: 'Report the stock level of an item.',
         validate: {
-          item: Joi.string().required().description('Item identifier.')
+          item: valid.Required(String).Describe('Item identifier.')
         }
       }
     }
@@ -99,7 +100,7 @@ module.exports = function (seneca, { Joi }) {
 }
 ```
 
-See [Describe message parameters with Joi](validate-message-parameters-with-joi.md)
+See [Describe message parameters](describe-message-parameters.md)
 for how the rules are rendered and what they do.
 
 ## 4. Insert hand written files

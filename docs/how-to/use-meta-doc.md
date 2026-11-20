@@ -26,7 +26,7 @@ module.exports = function shop(options) {
 ```
 
 The value is a doc definition: an object with `messages` (and
-optionally `sections`), or a function `(seneca, { Joi }) => definition`.
+optionally `sections`), or a function `(seneca, { valid }) => definition`.
 Other meta data properties (`exports`, `name` and so on) can be returned
 alongside `doc`.
 
@@ -59,12 +59,13 @@ function price(msg, reply) { ... }
 price.desc = 'Calculate the gross price of a quantity of an item.'
 price.examples = { 'item:apple,quantity:2': 'Price of two apples.' }
 price.reply_desc = { price: 'gross price', currency: 'currency code' }
-price.validate = { item: Joi.string().required() }
+price.validate = { item: seneca.valid.Required(String) }
 ```
 
 `desc`, `examples` and `reply_desc` are read by `@seneca/doc`.
-`validate` is read by Seneca itself (both 3 and 4), which merges it into
-the action's rules; `@seneca/doc` then renders those rules. The
+`validate` is read by Seneca itself, which merges it into the action's
+rules as documentation (Seneca enforces only the rules in the pattern);
+`@seneca/doc` then renders those rules. The
 `@seneca/doc` plugin documents its own `describe:plugin` action this
 way, see [doc.js](../../doc.js).
 
