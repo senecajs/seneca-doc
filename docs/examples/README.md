@@ -19,7 +19,7 @@ The files require `@seneca/doc` from this repository
 dependency of this repository.
 
 Run them from the example folder of a checkout, after `npm install`,
-with Node.js 22 or later:
+with Node.js 24 or later:
 
 ```sh
 cd docs/examples/shop

@@ -35,13 +35,12 @@ seneca.act('sys:doc,describe:plugin', { plugin: 'shop' }, function (err, out) {
 
 `out.def` is the plugin record (`undefined` if no plugin has that
 name), `out.actions` the action definitions of the plugin (excluding
-Seneca's own `role:seneca` patterns), and `out.options_shape` the Gubu
+Seneca's own `role:seneca` patterns), and `out.options_shape` the
 shape of the plugin options, or `null`. For a tagged plugin pass
 `plugin: 'shop$eu'`. The message fails with `plugin_missing` when the
 `plugin` property is missing.
 
-With Seneca 4 (or seneca-promisify on Seneca 3) the same query can be
-written with promises:
+The same query can be written with promises:
 
 ```js
 seneca.ready(async function () {

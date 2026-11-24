@@ -20,7 +20,7 @@ The complete example project is in [examples/shop](examples/shop/).
 | ----- | ------ |
 | [Write a doc file](how-to/write-a-doc-file.md) | Where the `-doc.js` file goes, its shape, the function form, hand written files for actions and sections. |
 | [Define the documentation inside the plugin](how-to/use-meta-doc.md) | `meta.doc`, the `doc` property of the definition function, properties on action functions. |
-| [Describe message parameters with Joi](how-to/validate-message-parameters-with-joi.md) | `validate` rules, how they are rendered, enforcing them, Gubu rules in patterns. |
+| [Describe message parameters](how-to/describe-message-parameters.md) | `validate` rules with Shape builders, how they are rendered, enforced rules in patterns. |
 | [Run the generator](how-to/run-the-generator.md) | `npm run doc`, markers, plugin dependencies with `-p`, pattern ordering with `-t`, debugging a run. |
 | [Query documentation at runtime](how-to/query-documentation-at-runtime.md) | `describe:plugin`, `describe:pin`, action definition fields, the exports. |
 | [Migrate from Seneca 3](how-to/migrate-from-seneca-3.md) | What changes for plugins documented with `@seneca/doc` when moving to Seneca 4. |
@@ -34,13 +34,13 @@ The complete example project is in [examples/shop](examples/shop/).
 | [Options](reference/options.md) | Every plugin option. |
 | [Command line](reference/command-line.md) | The `seneca-doc` tool: requirements, flags, environment, what it loads, exit codes, programmatic use. |
 | [README markers and generated sections](reference/readme-markers.md) | The marker comments and the exact content generated for each. |
-| [Errors](reference/errors.md) | Error codes, doc definition validation errors, validation errors from seneca-joi. |
+| [Errors](reference/errors.md) | Error codes, doc definition validation errors, message validation errors. |
 
 ## Explanation
 
 | Explanation | Topic |
 | ----------- | ----- |
-| [How @seneca/doc works](explanation/how-it-works.md) | Why documentation lives next to actions, how action modifiers collect it, the generation pipeline, Seneca 3 versus 4, limits. |
+| [How @seneca/doc works](explanation/how-it-works.md) | Why documentation lives next to actions, how action modifiers collect it, the generation pipeline, Seneca 4, limits. |
 
 ## Feature index
 
@@ -68,11 +68,11 @@ documents it.
 | `messages` | doc definition property | [Doc definition](reference/doc-definition.md#the-doc-definition-object) |
 | `sections` | doc definition property | [Doc definition](reference/doc-definition.md#sections) |
 | `desc` | message documentation property | [Doc definition](reference/doc-definition.md#message-documentation) |
-| `validate` | message documentation property | [Doc definition](reference/doc-definition.md#message-documentation), [Describe message parameters with Joi](how-to/validate-message-parameters-with-joi.md) |
+| `validate` | message documentation property | [Doc definition](reference/doc-definition.md#message-documentation), [Describe message parameters](how-to/describe-message-parameters.md) |
 | `examples` | message documentation property | [Doc definition](reference/doc-definition.md#message-documentation) |
 | `reply_desc` | message documentation property | [Doc definition](reference/doc-definition.md#message-documentation) |
 | `path` | message documentation property | [Doc definition](reference/doc-definition.md#message-documentation) |
-| Function form `(seneca, { Joi })` | doc definition | [Doc definition](reference/doc-definition.md#function-form) |
+| Function form `(seneca, { valid })` | doc definition | [Doc definition](reference/doc-definition.md#function-form) |
 | `meta.doc` | doc definition source | [Doc definition](reference/doc-definition.md#where-doc-definitions-are-found) |
 | `define.doc`, `define.docdef` | doc definition source | [Doc definition](reference/doc-definition.md#where-doc-definitions-are-found) |
 | `<name>-doc.js` and variants | doc definition source | [Doc definition](reference/doc-definition.md#where-doc-definitions-are-found) |
@@ -84,7 +84,7 @@ documents it.
 | `<!--START:action-list-->` | README marker | [README markers](reference/readme-markers.md#action-list) |
 | `<!--START:action-desc-->` | README marker | [README markers](reference/readme-markers.md#action-desc) |
 | `<!--START:SECTION:name-->` | README marker | [README markers](reference/readme-markers.md#sectionname) |
-| `lib/inspect.js`, `lib/render.js`, `lib/inject.js`, `lib/host-seneca.js` | programmatic modules | [Command line](reference/command-line.md#programmatic-use) |
+| `lib/inspect.js`, `lib/render.js`, `lib/inject.js`, `lib/host-seneca.js`, `lib/kinds.js` | programmatic modules | [Command line](reference/command-line.md#programmatic-use) |
 
 ## Other documents
 

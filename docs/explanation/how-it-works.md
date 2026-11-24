@@ -2,7 +2,7 @@
 
 This page explains the design of `@seneca/doc`: why documentation is
 kept next to the actions, how it is collected, how the README is
-generated, and what differs between Seneca 3 and 4.
+generated, and how it uses Seneca 4.
 
 ## Documentation lives next to the actions
 
@@ -47,10 +47,7 @@ function win over the doc definition.
 
 Two consequences follow from this mechanism. First, order matters:
 only actions added after `@seneca/doc` loaded are documented, so it must
-be loaded before the plugins it documents, and before any plugin that
-reads `rules` to enforce them (seneca-joi registers its own modifier
-when it loads; loaded after `@seneca/doc`, it runs after the one that
-adds the rules). Second, documentation is attached per action: the
+be loaded before the plugins it documents. Second, documentation is attached per action: the
 lookup and validation run for each action, and the result is stored on
 the plugin record (`docdef`, `docpath`) for `describe:plugin` and the
 renderer.
@@ -80,22 +77,21 @@ text between marker pairs and leaves the rest of the README untouched,
 so generated and hand written documentation live in the same file and
 the command can be re-run at any time.
 
-## Seneca 3 versus Seneca 4
+## Seneca 4
 
-The plugin supports both, with these differences in what it does:
+`@seneca/doc` 9 supports Seneca 4 only (Seneca 3 projects stay on
+8.0.x). It relies on these parts of Seneca 4:
 
-| Topic | Seneca 3 | Seneca 4 |
-| ----- | -------- | -------- |
-| Joi | `seneca.util.Joi` exists. | Not provided; `@seneca/doc` uses its own `@hapi/joi` and passes it to doc definitions in function form. |
-| Options shape | Recorded on the plugin record (`options_shape`) when options are validated with Gubu, as with the tool's `legacy: false`; with the default Joi option validation `@seneca/doc` builds it from `defaults`. | Not recorded; `@seneca/doc` builds it from `defaults` with `seneca.valid`. |
-| `init$` directive | Accepted in the options passed to `use()`. | Rejected by option validation for plugins with `defaults` in 4.0.0-rc5 (accepted again with the core fix in senecajs/seneca#953); the tool sets it on the resolved options, which works on both. |
-| `ready()` | Callback, or promise with seneca-promisify. | Built in promise, but the tool uses the callback form because the promise form does not resolve on an idle instance in 4.0.0-rc5. |
-| Fatal errors | Terminate the process. | Terminate the process in 4.0.0; not in 4.0.0-rc5, so the tool sets its exit code itself. |
+| Topic | How `@seneca/doc` uses it |
+| ----- | ------------------------- |
+| Validation | Seneca 4 validates with [Shape](https://github.com/rjrodger/shape) and provides its builders as `seneca.valid`. `@seneca/doc` validates doc definitions with them and passes them to doc definitions in function form. It does not depend on Joi, which Seneca 4 does not provide either. |
+| Options shape | Seneca 4 does not record the shape of the plugin options; `@seneca/doc` builds it from `defaults` as Seneca does, and renders it from `shape.spec()`. |
+| Rules | Rules in a pattern are compiled into `actdef.shape` and enforced; `validate` rules are merged into `actdef.rules` as documentation only. `@seneca/doc` renders the compiled shape when there is one, and otherwise the rules. Shapes and their nodes are recognised by the `shape$` marker, Joi schemas by their own marker. |
+| `init$` directive | The tool sets it on the resolved options of the local plugin, in the plugin loading pipeline. |
+| `ready()` | Returns a promise; the tool awaits it. |
 
-What does not differ: `validate` rules are enforced on both only when
-seneca-joi is loaded after `@seneca/doc`; the errors of the plugin's
-messages reach callers unchanged; and the `legacy: false` option used by
-the tool is valid on both versions.
+The errors of the plugin's messages reach callers unchanged, and the
+`legacy: false` option used by the tool is valid.
 
 ## Limits
 

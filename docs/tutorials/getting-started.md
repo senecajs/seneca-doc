@@ -8,14 +8,13 @@ takes about fifteen minutes. The finished project is in
 
 ## 1. Set up a project
 
-`@seneca/doc` needs Node.js 22 or later (24 recommended) and Seneca
-installed in your project, either Seneca 3 or the Seneca 4 prerelease
-(4.0.0-rc5 or later). In a new directory:
+`@seneca/doc` needs Node.js 24 or later and Seneca 4 installed in your
+project. In a new directory:
 
 ```sh
 npm init -y
-npm install seneca
-npm install @seneca/doc -D
+npm install seneca@^4
+npm install @seneca/doc@^9 -D
 ```
 
 Edit `package.json` so that `main` names the plugin module and a script
@@ -61,7 +60,7 @@ function shop(options) {
     done()
   })
 
-  // Rules in the pattern are Gubu shapes; seneca-doc renders them.
+  // Rules in the pattern are Shape rules; seneca-doc renders them.
   // (A plain number would be a pattern value, so Default marks a rule.)
   seneca.add(
     'role:shop,cmd:price',
@@ -97,9 +96,9 @@ Create `shop-doc.js` next to `shop.js`. The tool finds it by name:
 
 ```js
 // Documentation of the shop plugin messages, keyed by action function name.
-// The function form receives the Seneca instance and the Joi copy used by
-// @seneca/doc, so this file needs no dependency of its own.
-module.exports = function (seneca, { Joi }) {
+// The function form receives the Seneca instance and `valid`, the Shape
+// builders of Seneca, so this file needs no dependency of its own.
+module.exports = function (seneca, { valid }) {
   return {
     messages: {
       price: {
@@ -116,12 +115,8 @@ module.exports = function (seneca, { Joi }) {
       stock: {
         desc: 'Report the stock level of an item.',
         validate: {
-          item: Joi.string()
-            .required()
-            .description('Item identifier.'),
-          warehouse: Joi.string()
-            .default('main')
-            .description('Warehouse name.')
+          item: valid.Required(String).Describe('Item identifier.'),
+          warehouse: valid.Default('main').Describe('Warehouse name.')
         },
         reply_desc: {
           item: 'item identifier',
@@ -241,8 +236,8 @@ properties placed first in every pattern:
 * [role:shop,cmd:stock](#-roleshopcmdstock-)
 ```
 
-The description of `stock` combines the `desc`, the Joi rules and the
-`reply_desc`:
+The description of `stock` combines the `desc`, the `validate` rules
+and the `reply_desc`:
 
 ````markdown
 ### &laquo; `role:shop,cmd:stock` &raquo;
@@ -254,10 +249,8 @@ Report the stock level of an item.
 #### Parameters
 
 
-* __item__ : string <i><small>required</small></i>
- : Item identifier.
-* __warehouse__ : string <i><small>"main"</small></i>
- : Warehouse name.
+* __item__ : _string_ : Item identifier.
+* __warehouse__ : _string_ (optional, default: `main`) : Warehouse name.
 
 
 
@@ -277,7 +270,7 @@ Report the stock level of an item.
 ----------
 ````
 
-The description of `price` renders the Gubu rules of its pattern
+The description of `price` renders the rules of its pattern
 (`item` is required, `quantity` is optional with default `1`) and the
 example as a complete message pattern:
 `role:shop,cmd:price,item:apple,quantity:2`. The description of `help`
@@ -363,9 +356,10 @@ file (`path`), which only the generator reads.
   Seneca, loads `@seneca/doc`, loads the plugin named by `main` without
   running its init action, describes it, renders the sections and
   replaces the text between the markers in `README.md`.
-* The `validate` rules describe parameters; `@seneca/doc` does not
-  validate messages, but seneca-joi can enforce the rules. See
-  [Describe message parameters with Joi](../how-to/validate-message-parameters-with-joi.md).
+* The `validate` rules describe parameters; neither `@seneca/doc` nor
+  Seneca enforces them. Rules in the pattern, such as those of `price`,
+  are enforced by Seneca. See
+  [Describe message parameters](../how-to/describe-message-parameters.md).
 
 ## Next steps
 

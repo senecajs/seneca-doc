@@ -1,11 +1,9 @@
-/* Copyright (c) 2019-2023 Voxgig Ltd. and other contributors, MIT License */
+/* Copyright (c) 2019-2026 Voxgig Ltd. and other contributors, MIT License */
 'use strict'
 
 const Path = require('path')
 
-// Doc definitions are validated with Joi. Seneca 4 no longer provides
-// Joi (seneca.util.Joi), so this plugin carries its own copy.
-const Joi = require('@hapi/joi')
+const Kinds = require('./lib/kinds')
 
 module.exports = doc
 
@@ -23,20 +21,55 @@ module.exports.errors = {
   pin_missing: 'Pin missing from message: <%=msg%>'
 }
 
-// Documentation of a single action, keyed by action function name.
-const actdoc_schema = Joi.object({
-  desc: Joi.string(),
-  validate: Joi.object(),
-  examples: Joi.object(),
-  reply_desc: Joi.object(),
-  path: Joi.string()
-})
+// Doc definitions are validated with the Shape builders of Seneca
+// (`seneca.valid`). Unknown properties are not allowed.
+function make_doc_shapes(valid) {
+  return {
+    // A doc definition: the messages of a plugin, and optional README
+    // sections.
+    docdef: valid({
+      messages: Object,
+      sections: valid.Skip(Object)
+    }),
 
-// A doc definition: the messages of a plugin, and optional README sections.
-const docdef_schema = Joi.object({
-  messages: Joi.object().required(),
-  sections: Joi.object()
-})
+    // Documentation of a single action, keyed by action function name.
+    actdoc: valid({
+      desc: valid.Skip(String),
+      validate: valid.Skip(Object),
+      examples: valid.Skip(Object),
+      reply_desc: valid.Skip(Object),
+      path: valid.Skip(String)
+    })
+  }
+}
+
+// Validate `value` with `shape`; the error message starts with `prefix`.
+function attempt(shape, value, prefix) {
+  try {
+    return shape(value)
+  } catch (e) {
+    e.message = prefix + ' ' + e.message
+    throw e
+  }
+}
+
+// The utilities passed to a doc definition in function form.
+function make_docutil(seneca) {
+  const docutil = { valid: seneca.valid }
+
+  // Before 9.0.0 this was a copy of @hapi/joi.
+  Object.defineProperty(docutil, 'Joi', {
+    get() {
+      throw new Error(
+        '@seneca/doc no longer provides Joi to doc definitions: ' +
+          'describe parameters with valid (the Shape builders of Seneca), ' +
+          'or require Joi from your own dependencies.'
+      )
+    }
+  })
+
+  return docutil
+}
 
 // Resolve the doc definition of a plugin, in order of preference: the
 // `doc` property of the plugin meta data (returned by the definition
@@ -44,6 +77,7 @@ const docdef_schema = Joi.object({
 // or a `<name>-doc.js` file next to the plugin module.
 module.exports.preload = function() {
   const seneca = this
+  const shapes = make_doc_shapes(seneca.valid)
 
   // TODO: replace with ordu task when seneca.add is updated to use ordu
   seneca.private$.action_modifiers.push(function(actdef) {
@@ -117,13 +151,12 @@ module.exports.preload = function() {
 
         if (docdef) {
           // A doc definition may be a function that receives the Seneca
-          // instance and utilities (the Joi copy used by this plugin), so
-          // that the plugin does not need its own Joi dependency.
+          // instance and utilities (`valid`, the Shape builders of Seneca).
           if ('function' === typeof docdef) {
-            docdef = docdef(seneca, { Joi })
+            docdef = docdef(seneca, make_docutil(seneca))
           }
 
-          docdef = Joi.attempt(docdef, docdef_schema, 'invalid')
+          docdef = attempt(shapes.docdef, docdef, 'invalid')
 
           plugin.docdef = docdef
           if (doc_path) {
@@ -133,9 +166,9 @@ module.exports.preload = function() {
           actdoc = docdef.messages[actdef_func_name]
 
           if (actdoc) {
-            actdoc = Joi.attempt(
+            actdoc = attempt(
+              shapes.actdoc,
               actdoc,
-              actdoc_schema,
               'action ' +
                 actdef.pattern +
                 ' (' +
@@ -170,6 +203,7 @@ module.exports.preload = function() {
 
 function doc(options) {
   const seneca = this
+  const valid = seneca.valid
 
   seneca
     .add('sys:doc,describe:plugin', describe_plugin_msg)
@@ -183,10 +217,11 @@ function doc(options) {
       'plugin:entity$foo':
         'Describe the seneca-entity plugin instance with tag _foo_.'
     },
+    // Documentation only: Seneca does not validate with these rules.
     validate: {
-      plugin: Joi.string()
-        .required()
-        .description(
+      plugin: valid
+        .Required(String)
+        .Describe(
           'The full name of the plugin (if tagged, use the form name$tag).'
         )
     },
@@ -194,7 +229,7 @@ function doc(options) {
       def: '{ Seneca plugin record }',
       plugin: 'plugin parameter',
       actions: ['{ Seneca action definition }'],
-      options_shape: '{ Gubu shape of the plugin options, or null }'
+      options_shape: '{ Shape of the plugin options, or null }'
     }
   })
 
@@ -257,11 +292,11 @@ function doc(options) {
     })
   }
 
+  // Documentation only: Seneca does not validate with these rules.
   describe_pin.validate = {
-    pin: Joi.alternatives()
-      .try(Joi.string(), Joi.object())
-      .required()
-      .description('The pin sub pattern in string or object format.')
+    pin: valid
+      .Required(valid.Any())
+      .Describe('The pin sub pattern in string or object format.')
   }
 
   return {
@@ -273,48 +308,41 @@ function doc(options) {
 }
 
 const intern = (module.exports.intern = {
-  // The Gubu shape of a plugin's options. Seneca 3 records it on the plugin
-  // record (`options_shape`); Seneca 4 does not, so build it from the
-  // plugin `defaults` when they are a plain object or a Gubu shape.
+  make_doc_shapes,
+  make_docutil,
+  attempt,
+
+  // The Shape of a plugin's options, built from the plugin `defaults` as
+  // Seneca does when it validates them: a plain object, a shape, or a
+  // function of `{ valid }` that returns either. Seneca 4 does not record
+  // the shape on the plugin record.
   options_shape: function(instance, def) {
     if (null == def) {
       return null
     }
 
-    if (def.options_shape) {
-      return def.options_shape
-    }
-
-    const Gubu = instance.valid || (instance.util && instance.util.Gubu)
+    const valid = instance.valid
     let defaults = def.defaults
 
-    if ('function' === typeof defaults && !defaults.gubu) {
-      defaults = defaults({ valid: Gubu, Joi: instance.util.Joi || Joi })
+    if ('function' === typeof defaults && !Kinds.is_shape(defaults)) {
+      defaults = defaults({ valid })
     }
 
     if (null == defaults) {
       return null
     }
 
-    if (defaults.gubu) {
+    if (Kinds.is_shape(defaults)) {
       return defaults
     }
 
-    // Joi schemas are rendered from `options_schema` when Seneca records it.
-    if (
-      'object' !== typeof defaults ||
-      defaults.$_root ||
-      Joi.isSchema(defaults, { legacy: true })
-    ) {
-      return null
-    }
-
-    if ('function' !== typeof Gubu) {
+    // Joi schemas are not option shapes; Seneca 4 does not support them.
+    if ('object' !== typeof defaults || Kinds.is_joi(defaults)) {
       return null
     }
 
     try {
-      return Gubu(defaults)
+      return valid(defaults)
     } catch (e) {
       return null
     }

@@ -31,16 +31,14 @@ A level two heading `## Options` and one bullet per option:
 ```
 
 The options come from the `options_shape` of the `describe:plugin`
-reply, that is, from the plugin `defaults` (Seneca 3 records the shape
-when it validates options with Gubu; otherwise `@seneca/doc` builds it).
-Nested options are listed as `parent.child`, each with its Gubu type
-and then `required`, or its default value in JSON when that is a
-string, number or boolean (optional values made with `Skip` show no
-default); properties ending in `$` (directives such as `init$`) are
-left out. When the plugin record carries a Joi schema as
-`options_schema`, that schema is rendered instead, with a note on how
-to set options (Seneca 3.38 and 4 record `null` there). Without options
-the section says `*None.*`.
+reply, that is, from the plugin `defaults`, from which `@seneca/doc`
+builds the shape as Seneca does. Nested options are listed as
+`parent.child`, each with its type and then `required`, or its default
+value in JSON when that is a string, number or boolean (optional values
+made with `Skip` show no default), and then ` : ` and the description
+of a rule made with `.Describe('...')`; properties ending in `$`
+(directives such as `init$`) are left out. Without options the section
+says `*None.*`.
 
 ## `action-list`
 
@@ -66,12 +64,12 @@ content of the file named by the action's `path`, or:
 1. the `desc` (or `*None.*`);
 2. `#### Examples`, when there are examples: `` `<pattern>,<key>` `` and
    the description of each;
-3. `#### Parameters`, when the action has rules: for a pattern with
-   Gubu rules, each rule's type in italics and
-   ``(optional, default: `value`)`` when not required; otherwise each
-   `validate` rule, as Joi
-   type with `required` or the default and the `description`, or with
-   `util.inspect` for non Joi values;
+3. `#### Parameters`, when the action has rules: the rules of the
+   pattern, or else the `validate` rules. A Shape rule shows its type
+   in italics, ``(optional, default: `value`)`` when not required, and
+   ` : ` and its description when it has one; a Joi schema (from the
+   plugin's own Joi) shows its type with `required` or the default and
+   its `description`; other values are shown with `util.inspect`;
 4. `#### Replies With` and the `reply_desc` as a fenced block, when
    present.
 
@@ -196,10 +194,8 @@ Report the stock level of an item.
 #### Parameters
 
 
-* __item__ : string <i><small>required</small></i>
- : Item identifier.
-* __warehouse__ : string <i><small>"main"</small></i>
- : Warehouse name.
+* __item__ : _string_ : Item identifier.
+* __warehouse__ : _string_ (optional, default: `main`) : Warehouse name.
 
 
 

@@ -1,5 +1,3 @@
-// const Joi = require('@hapi/joi')
-
 module.exports = {
   messages: {
     describe_pin: {

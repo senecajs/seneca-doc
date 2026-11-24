@@ -20,7 +20,7 @@ function shop(options) {
     done()
   })
 
-  // Rules in the pattern are Gubu shapes; seneca-doc renders them.
+  // Rules in the pattern are Shape rules; seneca-doc renders them.
   // (A plain number would be a pattern value, so Default marks a rule.)
   seneca.add(
     'role:shop,cmd:price',

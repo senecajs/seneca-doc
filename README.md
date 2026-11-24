@@ -19,8 +19,8 @@ descriptions to the action definitions at runtime, answers
 `sys:doc,describe:plugin` and `sys:doc,describe:pin` messages, and its
 `seneca-doc` command line tool generates the Options, Action Patterns
 and Action Descriptions sections of the plugin README. It works with
-Seneca 3 and with the Seneca 4 prerelease (4.0.0-rc5 or later) on
-Node.js 24 and 22.
+Seneca 4 on Node.js 24 or later. Seneca 3 users stay on `@seneca/doc`
+8.0.x.
 
 The full documentation is in [docs/](docs/README.md): a tutorial,
 how-to guides, reference pages and an explanation of how it works.
@@ -32,8 +32,8 @@ npm install @seneca/doc -D
 ```
 
 `seneca` is a peer dependency: the plugin and the `seneca-doc` tool run
-inside the Seneca installed in your project (version 3, or 4.0.0-rc5 or
-later). Add a script to your `package.json`:
+inside the Seneca installed in your project (`seneca@^4`). Add a script
+to your `package.json`:
 
 ```json
 {
@@ -51,7 +51,7 @@ action functions:
 
 ```js
 // shop-doc.js
-module.exports = function (seneca, { Joi }) {
+module.exports = function (seneca, { valid }) {
   return {
     messages: {
       price: {
@@ -62,7 +62,7 @@ module.exports = function (seneca, { Joi }) {
       stock: {
         desc: 'Report the stock level of an item.',
         validate: {
-          item: Joi.string().required().description('Item identifier.')
+          item: valid.Required(String).Describe('Item identifier.')
         },
         reply_desc: { item: 'item identifier', count: 'units in stock' }
       }
@@ -112,7 +112,7 @@ looked up in the current directory (see
   with the complete example project in [docs/examples/shop](docs/examples/shop/).
 * How-to guides: [write a `-doc.js` file](docs/how-to/write-a-doc-file.md),
   [define the documentation inside the plugin](docs/how-to/use-meta-doc.md),
-  [describe message parameters with Joi](docs/how-to/validate-message-parameters-with-joi.md),
+  [describe message parameters](docs/how-to/describe-message-parameters.md),
   [run the generator from `npm run doc`](docs/how-to/run-the-generator.md),
   [query documentation at runtime](docs/how-to/query-documentation-at-runtime.md),
   [migrate from Seneca 3](docs/how-to/migrate-from-seneca-3.md).
@@ -182,9 +182,8 @@ touch.
 
 ### Running tests
 
-The tests use [jest](https://jestjs.io) and run on Node.js 24 (default)
-and 22, against the Seneca 4 prerelease declared as a development
-dependency:
+The tests use [jest](https://jestjs.io) and run on Node.js 24 or later,
+against the Seneca 4 declared as a development dependency:
 
 ```sh
 npm install
@@ -193,9 +192,8 @@ npm test
 
 To check against another Seneca build, install it without saving and
 run the tests again, for example `npm install --no-save ../seneca-4.0.0.tgz && npm test`,
-then `npm install` to restore the declared version. The tests include
-an integration test with seneca-joi (a development dependency). The
-example programs run from their folder:
+then `npm install` to restore the declared version. The example
+programs run from their folder:
 
 ```sh
 cd docs/examples/shop
@@ -215,12 +213,12 @@ workflow files need a GitHub token with the `workflow` scope.
 
 `@seneca/doc` was created in 2019 by Richard Rodger for Voxgig, as a
 tool that generates the API sections of Seneca plugin READMEs.
-Version 8.1.0 adds support for Seneca 4 (see the
+Version 9.0.0 supports Seneca 4 only (see the
 [change log](CHANGES.md)).
 
 | @seneca/doc | Seneca | Node.js |
 | ----------- | ------ | ------- |
-| 8.1.x | 3.x (tested with 3.38) and 4.0.0-rc5 or later (tested with 4.0.0-rc5 and the unreleased 4.0.0), as a peer dependency | 24 and 22 |
+| 9.x | 4.x (peer dependency `^4.0.0`) | 24 or later |
 | 8.0.x | 3.x only (`seneca@^3.36.0` was a dependency) | As supported by the Seneca 3 release |
 
 Licensed under [MIT](LICENSE).

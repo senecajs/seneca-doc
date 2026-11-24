@@ -1,6 +1,6 @@
 {
   "name": "@seneca/doc",
-  "version": "8.1.0",
+  "version": "9.0.0",
   "description": "Documentation helper for Seneca plugins.",
   "main": "doc.js",
   "bin": {
@@ -29,6 +29,7 @@
     "lib/inspect.js",
     "lib/render.js",
     "lib/host-seneca.js",
+    "lib/kinds.js",
     "docs",
     "!docs/**/node_modules",
     "!docs/**/coverage",
@@ -38,6 +39,9 @@
     "type": "git",
     "url": "git+https://github.com/senecajs/seneca-doc.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "seneca",
     "doc",
@@ -46,20 +50,21 @@
   ],
   "author": "Richard Rodger richardrodger.com",
   "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
   "bugs": {
     "url": "https://github.com/senecajs/seneca-doc/issues"
   },
   "homepage": "https://github.com/senecajs/seneca-doc#readme",
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
     "minimist": "^1.2.8"
   },
   "peerDependencies": {
-    "seneca": ">=3 || >=4.0.0-rc5"
+    "seneca": "^4.0.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "seneca": "^4.0.0-rc5",
-    "seneca-joi": "^7.0.2"
+    "seneca": "^4.0.0"
   }
 }

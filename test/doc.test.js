@@ -1,4 +1,4 @@
-/* Copyright (c) 2019-2023 voxgig and other contributors, MIT License */
+/* Copyright (c) 2019-2026 voxgig and other contributors, MIT License */
 'use strict'
 
 const Fs = require('fs')
@@ -6,11 +6,13 @@ const Os = require('os')
 const Path = require('path')
 
 const Seneca = require('seneca')
-const Joi = require('@hapi/joi')
 
 const Plugin = require('..')
 const Render = require('../lib/render')
 const Inject = require('../lib/inject')
+const Kinds = require('../lib/kinds')
+
+const valid = Seneca.valid
 
 describe('doc', () => {
   const instances = []
@@ -18,7 +20,7 @@ describe('doc', () => {
   afterEach(async () => {
     while (0 < instances.length) {
       const si = instances.pop()
-      await new Promise(resolve => si.close(resolve))
+      await si.close()
     }
   })
 
@@ -39,8 +41,8 @@ describe('doc', () => {
     expect(out.actions[0].desc).toEqual(
       'Provide introspection data for a plugin and its actions.'
     )
-    expect(Joi.isSchema(out.actions[0].rules.plugin)).toEqual(true)
-    expect(typeof out.options_shape).toEqual('function')
+    expect(Kinds.is_shape_node(out.actions[0].rules.plugin)).toEqual(true)
+    expect(Kinds.is_shape(out.options_shape)).toEqual(true)
   })
 
   test('describe-plugin-unknown', async () => {
@@ -110,7 +112,7 @@ describe('doc', () => {
 
     var a1 = si.find('p:p0,a:1')
     expect(a1.desc).toEqual('a1')
-    expect(Joi.isSchema(a1.rules.x)).toEqual(true)
+    expect(Kinds.is_shape_node(a1.rules.x)).toEqual(true)
     expect(a1.examples).toEqual({})
     expect(a1.reply_desc).toBeNull()
     expect(a1.path).toBeNull()
@@ -143,24 +145,49 @@ describe('doc', () => {
     )
   })
 
-  // seneca-joi, loaded after @seneca/doc, enforces the Joi rules of the docs.
-  test('action-validation', async () => {
+  // The validate rules of doc definitions describe messages; Seneca
+  // validates only the rules in the action pattern.
+  test('validate-rules-are-documentation', async () => {
     var si = makeSeneca()
-      .use('seneca-joi')
       .use(Path.join(__dirname, 'p0'))
       .use(Path.join(__dirname, 'p1'))
       .use(Path.join(__dirname, 'p2'))
     await ready(si)
 
     for (var p of ['p0', 'p1', 'p2']) {
-      expect(await si.post('p:' + p + ',a:1,x:x')).toEqual({ y: 'x' })
-      await expect(si.post('p:' + p + ',a:1', { x: 1 })).rejects.toMatchObject(
-        { code: 'act_invalid_msg' }
-      )
+      var a1 = si.find('p:' + p + ',a:1')
+      expect(a1.rules.x.t).toEqual('string')
+      expect(a1.rules.x.r).toEqual(true)
 
-      // a2 has no documentation, so no rules
+      expect(await si.post('p:' + p + ',a:1,x:x')).toEqual({ y: 'x' })
+      expect(await si.post('p:' + p + ',a:1', { x: 1 })).toEqual({ y: 1 })
       expect(await si.post('p:' + p + ',a:2', { x: 1 })).toEqual({ y: 1 })
     }
+  })
+
+  // Doc definitions in function form receive the Shape builders of Seneca.
+  test('docutil', async () => {
+    var si = await ready(makeSeneca())
+    var docutil = Plugin.intern.make_docutil(si)
+    expect(docutil.valid).toBe(si.valid)
+    expect(() => docutil.Joi).toThrow(/no longer provides Joi/)
+  })
+
+  // Doc definitions are validated; unknown properties are not allowed.
+  test('docdef-invalid', async () => {
+    var si = await ready(makeSeneca())
+    var shapes = Plugin.intern.make_doc_shapes(si.valid)
+
+    var docdef = { messages: { a1: { desc: 'a1' } } }
+    expect(Plugin.intern.attempt(shapes.docdef, docdef, 'invalid')).toEqual(
+      docdef
+    )
+    expect(() =>
+      Plugin.intern.attempt(shapes.docdef, { sections: {} }, 'invalid')
+    ).toThrow(/^invalid .*messages/)
+    expect(() =>
+      Plugin.intern.attempt(shapes.actdoc, { desc: 'a', foo: 1 }, 'bad')
+    ).toThrow(/^bad .*foo/)
   })
 
   // Load from `doc` prop in plugin meta return
@@ -170,7 +197,7 @@ describe('doc', () => {
 
     var a1 = si.find('p:p1,a:1')
     expect(a1.desc).toEqual('a1')
-    expect(Joi.isSchema(a1.rules.x)).toEqual(true)
+    expect(Kinds.is_shape_node(a1.rules.x)).toEqual(true)
     expect(si.find('p:p1,a:2').desc).toEqual('No description provided.')
     expect(si.find_plugin('p1').docpath).toBeUndefined()
   })
@@ -182,7 +209,7 @@ describe('doc', () => {
 
     var a1 = si.find('p:p2,a:1')
     expect(a1.desc).toEqual('a1')
-    expect(Joi.isSchema(a1.rules.x)).toEqual(true)
+    expect(Kinds.is_shape_node(a1.rules.x)).toEqual(true)
     expect(si.find('p:p2,a:2').desc).toEqual('No description provided.')
   })
 
@@ -219,12 +246,12 @@ describe('doc', () => {
   })
 
   test('options_section_nested', async () => {
-    var Gubu = Seneca.util.Gubu
-    var shape = Gubu({
+    var shape = valid({
       currency: 'EUR',
       tax: { rate: 0.2 },
-      name: Gubu.Required(String),
-      note: Gubu.Skip(String),
+      name: valid.Required(String),
+      note: valid.Skip(String),
+      level: valid.Skip(Number).Describe('Log level.'),
       handler: () => null,
       init$: true
     })
@@ -233,51 +260,35 @@ describe('doc', () => {
     expect(md).toContain('* `tax.rate` : number <i><small>0.2</small></i>')
     expect(md).toContain('* `name` : string <i><small>required</small></i>')
     expect(md).toContain('* `note` : string\n')
+    expect(md).toContain('* `level` : number\n : Log level.\n')
     expect(md).toContain('* `handler` : function\n')
     expect(md).not.toContain('init$')
 
     expect(Render.options({ def: {} })[0].text).toContain('*None.*')
   })
 
-  // Options shape: recorded by Seneca 3, built from the defaults otherwise.
+  // Options shape: built from the plugin defaults, as Seneca does.
   test('options_shape', async () => {
     var si = await ready(makeSeneca())
     var options_shape = Plugin.intern.options_shape
 
     expect(options_shape(si, undefined)).toBeNull()
     expect(options_shape(si, {})).toBeNull()
-    expect(
-      options_shape(si, { defaults: Joi.object({ a: Joi.string() }) })
-    ).toBeNull()
+    expect(options_shape(si, { defaults: 'a' })).toBeNull()
+    expect(options_shape(si, { defaults: joiLike('object') })).toBeNull()
 
-    var recorded = Seneca.util.Gubu({ r: 0 })
-    expect(options_shape(si, { options_shape: recorded })).toBe(recorded)
-
-    var given = Seneca.util.Gubu({ b: 2 })
+    var given = valid({ b: 2 })
     expect(options_shape(si, { defaults: given })).toBe(given)
 
     expect(options_shape(si, { defaults: { a: 1 } })({})).toEqual({ a: 1 })
     expect(
       options_shape(si, { defaults: ({ valid }) => valid({ c: 3 }) })({})
     ).toEqual({ c: 3 })
-  })
-
-  // A Joi schema recorded as options_schema is rendered instead of a shape.
-  test('options_section_joi', async () => {
-    var md = Render.options({
-      def: {
-        name: 'foo',
-        options_schema: Joi.object({
-          a: Joi.string()
-            .default('x')
-            .description('The a option.'),
-          b: Joi.object({ c: Joi.number().required() })
-        })
-      }
-    })[0].text
-    expect(md).toContain('* `a` : string <i><small>"x"</small></i>\n : The a option.')
-    expect(md).toContain('* `b.c` : number <i><small>required</small></i>')
-    expect(md).toContain("seneca.use('foo', { name: value, ... })")
+    expect(
+      options_shape(si, { defaults: ({ valid }) => ({ d: valid.Default(4) }) })(
+        {}
+      )
+    ).toEqual({ d: 4 })
   })
 
   test('action_list', async () => {
@@ -304,17 +315,26 @@ describe('doc', () => {
       'Provide introspection data for a plugin and its actions.'
     )
     expect(md).toContain('* `sys:doc,describe:plugin,plugin:entity`')
-    expect(md).toContain('* __plugin__ : string <i><small>required</small></i>')
+    expect(md).toContain(
+      '* __plugin__ : _string_ : The full name of the plugin (if tagged, use the form name$tag).'
+    )
+    expect(md).toContain(
+      '* __pin__ : _any_ : The pin sub pattern in string or object format.'
+    )
     expect(md).toContain('#### Replies With')
     expect(md).toContain("plugin: 'plugin parameter'")
   })
 
-  test('action_desc_gubu_rules', async () => {
+  test('action_desc_shape_rules', async () => {
     var si = makeSeneca().use(function p4() {
       // Scalars in a pattern are matching values; rules need a type or builder.
       this.add(
         'p:p4,a:1',
-        { x: String, y: Seneca.util.Gubu.Default(1) },
+        {
+          x: String,
+          y: this.valid.Default(1),
+          z: this.valid.Skip(String).Describe('The z.')
+        },
         function a1(msg, reply) {
           reply({ y: msg.x })
         }
@@ -323,8 +343,34 @@ describe('doc', () => {
     await ready(si)
     var out = await si.post('sys:doc,describe:plugin', { plugin: 'p4' })
     var md = Render.action_desc(out)[0].text
-    expect(md).toContain('* __x__ : _string_')
+    expect(md).toContain('* __x__ : _string_\n')
     expect(md).toContain('* __y__ : _number_ (optional, default: `1`)')
+    expect(md).toContain('* __z__ : _string_ (optional, default: ``) : The z.')
+  })
+
+  // Joi rules in validate annotations are rendered from their description,
+  // when the plugin provides its own Joi.
+  test('action_desc_joi_rules', async () => {
+    var md = Render.action_desc({
+      actions: [
+        {
+          pattern: 'a:1',
+          rules: {
+            b: joiLike('string', {
+              presence: 'required',
+              description: 'The b.'
+            }),
+            c: joiLike('number', { default: 2 }),
+            d: 'other'
+          }
+        }
+      ]
+    })[0].text
+    expect(md).toContain(
+      '* __b__ : string <i><small>required</small></i>\n : The b.'
+    )
+    expect(md).toContain('* __c__ : number <i><small>2</small></i>')
+    expect(md).toContain("* __d__ : 'other'")
   })
 
   test('action_desc_path', async () => {
@@ -424,6 +470,14 @@ e
     expect(rin('b:2,a:1')).toEqual('a:1,b:2')
   })
 
+  // A stand-in for a Joi schema: Joi is not a dependency.
+  function joiLike(type, flags) {
+    return {
+      [Symbol.for('@hapi/joi/schema')]: { version: '17' },
+      describe: () => ({ type, flags })
+    }
+  }
+
   function makeSeneca(config, plugin_options) {
     const si = Seneca(config)
       .test()
@@ -432,9 +486,8 @@ e
     return si
   }
 
-  // Callback form: the promise form of ready() does not resolve on an idle
-  // instance in Seneca 4.0.0-rc5.
-  function ready(si) {
-    return new Promise(resolve => si.ready(() => resolve(si)))
+  async function ready(si) {
+    await si.ready()
+    return si
   }
 })
